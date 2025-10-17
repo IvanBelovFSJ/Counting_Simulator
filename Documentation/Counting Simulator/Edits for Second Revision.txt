@@ -1,0 +1,2 @@
+Purchase Credits Use Case and a Sequence Diagram
+Bet Credits Use Case and a Sequence Diagram
