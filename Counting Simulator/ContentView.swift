@@ -467,9 +467,8 @@ struct ContentView: View {
     @State private var o6: Image = cardSpot
     @State private var o9: Image = cardSpot
     
+    /* Scanning for a win condition */
     func checkGameStatus() {
-        // Check for win conditions
-        // for first, second and third round
         if playerScore == targetScore {
             print("you win a round")
             playerColorOne = .green
@@ -611,7 +610,7 @@ struct ContentView: View {
                     break   }   }   }
         checkGameStatus()   }
     
-    /* Setting up decks, hands. */
+    /* Setting up decks, hands for a new game of three rounds. */
     func newGame()  {
         
         playerColorOne = .gray
@@ -793,48 +792,230 @@ struct ContentView: View {
         playerThirdInterCard = deck[positionPlayerPlayingHand[2]].Image
         playerFourthInterCard = deck[positionPlayerPlayingHand[3]].Image    }   // End of newGame()
     
+        /* Setting up decks, hands for a new round. */
+        func newRound()  {
+            
+            playersHand.removeAll()
+            playerPlayingHand.removeAll()
+            
+            opponentsHand.removeAll()
+            opponentPlayingHand.removeAll()
+            
+            positionPlayerHand.removeAll()
+            positionPlayerPlayingHand.removeAll()
+            
+            positionOpponentHand.removeAll()
+            positionOpponentPlayingHand.removeAll()
+            
+            p1 = cardSpot
+            p2 = cardSpot
+            p3 = cardSpot
+            p4 = cardSpot
+            p5 = cardSpot
+            p6 = cardSpot
+            p7 = cardSpot
+            p8 = cardSpot
+            p9 = cardSpot
+            o1 = cardSpot
+            o4 = cardSpot
+            o7 = cardSpot
+            o2 = cardSpot
+            o5 = cardSpot
+            o8 = cardSpot
+            o3 = cardSpot
+            o6 = cardSpot
+            o9 = cardSpot
+            
+            tupleP1 = (false,cardSpot)
+            tupleP2 = (false,cardSpot)
+            tupleO1 = (false,cardSpot)
+            tupleO2 = (false,cardSpot)
+            
+            playerScore = 0
+            opponentScore = 0
+            
+            opponentFourthHandCardSwitch = false
+            opponentThirdHandCardSwitch = false
+            opponentSecondHandCardSwitch = false
+            opponentFirstHandCardSwitch = false
+            playerFourthHandCardSwitch = false
+            playerThirdHandCardSwitch = false
+            playerSecondHandCardSwitch = false
+            playerFirstHandCardSwitch = false
+            
+            playerFirstInterValue = 0
+            playerSecondInterValue = 0
+            playerThirdInterValue = 0
+            playerFourthInterValue = 0
+            opponentFirstInterValue = 0
+            opponentSecondInterValue = 0
+            opponentThirdInterValue = 0
+            opponentFourthInterValue = 0
+            
+            playerFirstCardFace = cardSpot
+            playerSecondCardFace = cardSpot
+            playerThirdCardFace = cardSpot
+            playerFourthCardFace = cardSpot
+            opponentFirstCardFace = cardSpot
+            opponentSecondCardFace = cardSpot
+            opponentThirdCardFace = cardSpot
+            opponentFourthCardFace = cardSpot
+            
+            playerFirstInterCard = cardSpot
+            playerSecondInterCard = cardSpot
+            playerThirdInterCard = cardSpot
+            playerFourthInterCard = cardSpot
+            opponentFirstInterCard = cardSpot
+            opponentSecondInterCard = cardSpot
+            opponentThirdInterCard = cardSpot
+            opponentFourthInterCard = cardSpot
+            
+            /* Sweeping through a gameboard, removing all cards. */
+            for position in 0...playerGameboard.count - 1 {
+                playerGameboard[position].Taken = false
+                playerGameboard[position].Image = cardSpot
+                opponentGameboard[position].Taken = false
+                opponentGameboard[position].Image = cardSpot    }
+            
+            /* Reseting the dealer's deck */
+            for everyCard in 0...dealerCards.count - 1 {
+                dealerCards[everyCard].Taken = false    }
+
+            /* Creating arrays of ten deck cards and four hand cards for a player. */
+            for _ in 1...10  {
+                interCard = Int.random(in: 0..<deck.count)
+                repeat  {
+                    while (playersHand.contains(deck[interCard].Value))    {
+                    print("duplicate")
+                    interCard = Int.random(in: 0..<deck.count)  }
+                    playersHand.append(deck[interCard].Value)
+                    positionPlayerHand.append(interCard)
+                    interCard = Int.random(in: 0..<deck.count)
+                }   while !playersHand.contains(deck[interCard].Value) && playersHand.capacity == 9 }   // End of Ten Random Cards
+                
+            for _ in 1...4  {
+                interCard = Int.random(in: 0..<playersHand.count)
+                repeat  {
+                    while (playerPlayingHand.contains(deck[interCard].Value))    {
+                    print("duplicate")
+                    interCard = Int.random(in: 0..<playersHand.count)   }
+                    print(interCard)
+                    playerPlayingHand.append(deck[interCard].Value)
+                    positionPlayerPlayingHand.append(interCard)
+                    interCard = Int.random(in: 0..<playersHand.count)
+                }   while !playerPlayingHand.contains(playersHand[interCard]) && playerPlayingHand.capacity == 3    }   // End of Four Random Cards
+            
+        /* Creating arrays of ten deck and four hand cards for an opponent. */
+        for _ in 1...10 {
+            interCard = Int.random(in: 0..<deck.count)
+            repeat  {
+                while (opponentsHand.contains(deck[interCard].Value))    {
+                print("duplicate")
+                interCard = Int.random(in: 0..<deck.count)  }
+                opponentsHand.append(deck[interCard].Value)
+                positionOpponentHand.append(interCard)
+                interCard = Int.random(in: 0..<deck.count)
+            }   while !opponentsHand.contains(deck[interCard].Value) && opponentsHand.capacity == 9 }   // End of Ten Random Cards
+            
+        for _ in 1...4  {
+            interCard = Int.random(in: 0..<opponentsHand.count)
+            repeat  {
+                while (opponentPlayingHand.contains(deck[interCard].Value))    {
+                print("duplicate")
+                interCard = Int.random(in: 0..<opponentsHand.count) }
+                print(interCard)
+                opponentPlayingHand.append(deck[interCard].Value)
+                positionOpponentPlayingHand.append(interCard)
+                interCard = Int.random(in: 0..<opponentsHand.count)
+            }   while !opponentPlayingHand.contains(opponentsHand[interCard]) && opponentPlayingHand.capacity == 3  }   // End of Four Random Cards
+            
+            print(" ")
+            print("Player Values: ")
+            print(playerPlayingHand)
+            print(" ")
+            print("Opponent Values: ")
+            print(opponentPlayingHand)
+            
+            playerFirstInterValue = deck[positionPlayerPlayingHand[0]].Value
+            playerSecondInterValue = deck[positionPlayerPlayingHand[1]].Value
+            playerThirdInterValue = deck[positionPlayerPlayingHand[2]].Value
+            playerFourthInterValue = deck[positionPlayerPlayingHand[3]].Value
+            
+            opponentFirstInterValue = deck[positionOpponentPlayingHand[0]].Value
+            opponentSecondInterValue = deck[positionOpponentPlayingHand[1]].Value
+            opponentThirdInterValue = deck[positionOpponentPlayingHand[2]].Value
+            opponentFourthInterValue = deck[positionOpponentPlayingHand[3]].Value
+            
+            playerFirstCardFace = deck[positionPlayerPlayingHand[0]].Image
+            playerSecondCardFace = deck[positionPlayerPlayingHand[1]].Image
+            playerThirdCardFace = deck[positionPlayerPlayingHand[2]].Image
+            playerFourthCardFace = deck[positionPlayerPlayingHand[3]].Image
+            
+            opponentFirstCardFace = opponentCardSuit
+            opponentSecondCardFace = opponentCardSuit
+            opponentThirdCardFace = opponentCardSuit
+            opponentFourthCardFace = opponentCardSuit
+            
+            opponentFirstInterCard = deck[positionOpponentPlayingHand[0]].Image
+            opponentSecondInterCard = deck[positionOpponentPlayingHand[1]].Image
+            opponentThirdInterCard = deck[positionOpponentPlayingHand[2]].Image
+            opponentFourthInterCard = deck[positionOpponentPlayingHand[3]].Image
+            
+            playerFirstInterCard = deck[positionPlayerPlayingHand[0]].Image
+            playerSecondInterCard = deck[positionPlayerPlayingHand[1]].Image
+            playerThirdInterCard = deck[positionPlayerPlayingHand[2]].Image
+            playerFourthInterCard = deck[positionPlayerPlayingHand[3]].Image    }   // End of newRound()
+        
     /* Deals a card to both players from the dealer deck. */
-    func dealerMove() {
-        
-        for position in 0...opponentGameboard.count - 1 {
-            var randomCardNum = Int.random(in: 0..<dealerCards.count - 1)
-            if (opponentGameboard[position].Taken == false)   {
-                if (dealerCards[randomCardNum].Taken == false)   {
-                    let randomCard = dealerCards[randomCardNum].Image
-                    opponentGameboard[position].Image = randomCard
-                    opponentGameboard[position].Taken = true
-                    dealerCards[randomCardNum].Taken = true
-                    self.opponentScore += dealerCards[randomCardNum].Value
-                    break   }   else {  repeat  {
-                        randomCardNum = Int.random(in: 0..<dealerCards.count - 1)   }
-                    while dealerCards[randomCardNum].Taken != false
-                    let randomCard = dealerCards[randomCardNum].Image
-                    opponentGameboard[position].Image = randomCard
-                    opponentGameboard[position].Taken = true
-                    dealerCards[randomCardNum].Taken = true
-                    self.opponentScore += dealerCards[randomCardNum].Value
-                    break   }   }   }   /* End of Player Card */
-        
-        for positionPlayer in 0...playerGameboard.count - 1  {
-            var randomCardNum = Int.random(in: 0..<dealerCards.count - 1)
-            if (playerGameboard[positionPlayer].Taken == false)   {
-                if (dealerCards[randomCardNum].Taken == false)   {
-                    let randomCard = dealerCards[randomCardNum].Image
-                    playerGameboard[positionPlayer].Image = randomCard
-                    playerGameboard[positionPlayer].Taken = true
-                    dealerCards[randomCardNum].Taken = true
-                    self.playerScore += dealerCards[randomCardNum].Value
-                    break   }   else {  repeat  {
-                        randomCardNum = Int.random(in: 0..<dealerCards.count - 1)   }
-                    while dealerCards[randomCardNum].Taken != false
-                    let randomCard = dealerCards[randomCardNum].Image
-                    playerGameboard[positionPlayer].Image = randomCard
-                    playerGameboard[positionPlayer].Taken = true
-                    dealerCards[randomCardNum].Taken = true
-                    self.playerScore += dealerCards[randomCardNum].Value
-                    break   }   }   }   }   // End of dealerMove()
+            func dealerMove() {
+                
+                checkGameStatus()
+                
+                for position in 0...opponentGameboard.count - 1 {
+                    var randomCardNum = Int.random(in: 0..<dealerCards.count - 1)
+                    if (opponentGameboard[position].Taken == false)   {
+                        if (dealerCards[randomCardNum].Taken == false)   {
+                            let randomCard = dealerCards[randomCardNum].Image
+                            opponentGameboard[position].Image = randomCard
+                            opponentGameboard[position].Taken = true
+                            dealerCards[randomCardNum].Taken = true
+                            self.opponentScore += dealerCards[randomCardNum].Value
+                            break   }   else {  repeat  {
+                                randomCardNum = Int.random(in: 0..<dealerCards.count - 1)   }
+                                while dealerCards[randomCardNum].Taken != false
+                                        let randomCard = dealerCards[randomCardNum].Image
+                                        opponentGameboard[position].Image = randomCard
+                                        opponentGameboard[position].Taken = true
+                                        dealerCards[randomCardNum].Taken = true
+                                        self.opponentScore += dealerCards[randomCardNum].Value
+                                        break   }   }   }   /* End of Player Card */
+                
+                for positionPlayer in 0...playerGameboard.count - 1  {
+                    var randomCardNum = Int.random(in: 0..<dealerCards.count - 1)
+                    if (playerGameboard[positionPlayer].Taken == false)   {
+                        if (dealerCards[randomCardNum].Taken == false)   {
+                            let randomCard = dealerCards[randomCardNum].Image
+                            playerGameboard[positionPlayer].Image = randomCard
+                            playerGameboard[positionPlayer].Taken = true
+                            dealerCards[randomCardNum].Taken = true
+                            self.playerScore += dealerCards[randomCardNum].Value
+                            break   }   else {  repeat  {
+                                randomCardNum = Int.random(in: 0..<dealerCards.count - 1)   }
+                                while dealerCards[randomCardNum].Taken != false
+                                        let randomCard = dealerCards[randomCardNum].Image
+                                        playerGameboard[positionPlayer].Image = randomCard
+                                        playerGameboard[positionPlayer].Taken = true
+                                        dealerCards[randomCardNum].Taken = true
+                                        self.playerScore += dealerCards[randomCardNum].Value
+                                        break   }   }   }
+            
+                checkGameStatus()
+                
+            }   // End of dealerMove()
     
     func opponentMove() {
+        
+        checkGameStatus()
         
         let interScore = playerScore
         // for every cell on the playboard.
@@ -857,30 +1038,39 @@ struct ContentView: View {
             else if (playerScore >= targetScore) { print("opponent lost") }
             else { oneTurn() } } }   // End of opponentMove()
     
-    func playerMove()   {
-        
-        let interScore = playerScore
-        
-        while ( interScore == playerScore ) {
-            if (interScore > playerScore || interScore < playerScore)  {
-                break; } }  };   // player move
+            /* This is a player's move */
+            func playerMove()   {
+                
+                let interScore = playerScore
+                
+                while ( interScore == playerScore ) {
+                    if (interScore > playerScore || interScore < playerScore)  {
+                        break; } // End of if statement
+                } // End of While loop
+            } // End of player's move
     
     func startGame()    {
         newGame();
         repeat  {   oneTurn()
         }   while (booleanTurn == false && booleanGame == true) }
     
-    func oneTurn()   {
-        for turnCount in 0...3  {
-            switch turnCount    {
-            case 1  :   booleanTurn = true
-            case 2  :   dealerMove()
-            case 3  :   opponentMove()
-            case 10 :   print("End of turn")
-            default :   print("iteration")   }   }   }
+        func oneTurn()   {
+          //  for turnCount in 0...3  {
+          //     switch turnCount    {
+                /*case 1  :*/   booleanTurn = true
+                /*case 2  :*/   dealerMove()
+                /*case 3  :*/   opponentMove()
+                                checkGameStatus()
+                /*case 10 :*/   print("End of turn")
+                /*default :*/   print("turn : "/*,  turnCount*/)
+        //        }  // End of Switch
+        //    }  //End of for loop
+        }  // End of oneTurn
     
-    /* letting another player take turn. */
+    /* letting another ( opponent ) player take a turn. */
     func stand()    {
+        dealerMove()
+        opponentMove()
         print("standing")   }   // End of stand()
     
     /* Opponent's move. */
@@ -1015,7 +1205,8 @@ struct ContentView: View {
                     .buttonStyle(OpponentHandButton())  }   // End of Player Area
                 Spacer()
                 HStack() {  Spacer()
-        Button(action:  {   print("Hit Button Tapped") ;    oneTurn();  })  {
+                    // Hit Button
+        Button(action:  {   print("Hit Button Tapped"); oneTurn(); })  {
                 HStack()    {
                 Image(systemName: "arrow.clockwise.circle.fill")
                     .renderingMode(.template)
@@ -1030,11 +1221,13 @@ struct ContentView: View {
                     .blendMode(/*@START_MENU_TOKEN@*/.hardLight/*@END_MENU_TOKEN@*/)
                     .padding(.vertical, 10)
                     .padding(.horizontal, 10)   }   }   // End of Hit Button
+                    
                     .padding(.bottom)
                     .buttonStyle(LightButtonStyle())
                     .font(.largeTitle)
                     Spacer()
-                    Button(action:  {   print("Stand Button Tapped")    })  {
+                    // Stand Button
+                    Button(action:  {   print("Stand Button Tapped"); stand();   })  {
                         HStack()    {
                             Image(systemName: "xmark.circle.fill")
                                 .renderingMode(.template)
