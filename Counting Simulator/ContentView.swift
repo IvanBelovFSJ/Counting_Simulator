@@ -166,11 +166,9 @@ var booleanGame = true;
 
 var turnCount = 0;
 
-var game = true
-var match = true
 
-var gameTwo = false
-var matchTwo = false
+
+
 
 /* Main method */
 struct ContentView: View {
@@ -240,17 +238,18 @@ struct ContentView: View {
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .padding()
-                .background(LinearGradient(gradient: Gradient(colors: [outcomeColor , Color.black]), startPoint: .leading, endPoint: .trailing)/*Color(red: 0, green: 0, blue: 0.5)*/)
+                .background(LinearGradient(gradient: Gradient(colors: [outcomeColor , Color.black]), startPoint: .leading, endPoint: .trailing))
                 .clipShape(Circle())                // The shape of a button.
                 .scaleEffect(2)                     // Magnification of the button.
                 .padding(.horizontal, 15)   }   }   // End of struct BlueButton.
 
     /* The last light indicating player's progress. */
     struct RoundButtonPlayerThree: ButtonStyle  {
+        var outcomeColor = Color.gray
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .padding()
-                .background(LinearGradient(gradient: Gradient(colors: [game ? Color.gray : ( match ? Color.green : Color.red ) , Color.black]), startPoint: .leading, endPoint: .trailing)  )
+                .background(LinearGradient(gradient: Gradient(colors: [outcomeColor , Color.black]), startPoint: .leading, endPoint: .trailing))
                 .clipShape(Circle())                // The shape of a button.
                 .scaleEffect(2)                     // Magnification of the button
                 .padding(.horizontal, 15)   }   }   // End of struct BlueButton.
@@ -417,6 +416,8 @@ struct ContentView: View {
     
     @State private var targetScore = 21
     
+    @State private var gameOn = true
+    @State private var roundsCount = 0
     @State private var playerScore: Int = 0
     @State private var opponentScore: Int = 0
     
@@ -613,26 +614,25 @@ struct ContentView: View {
     /* Setting up decks, hands for a new game of three rounds. */
     func newGame()  {
         
+        // Reset progress indicators
         playerColorOne = .gray
         playerColorTwo = .gray
         playerColorThree = .gray
-        
         opponentColorOne = .gray
         opponentColorTwo = .gray
         opponentColorThree = .gray
         
+        // Clear hands and positions
         playersHand.removeAll()
         playerPlayingHand.removeAll()
-        
         opponentsHand.removeAll()
         opponentPlayingHand.removeAll()
-        
         positionPlayerHand.removeAll()
         positionPlayerPlayingHand.removeAll()
-        
         positionOpponentHand.removeAll()
         positionOpponentPlayingHand.removeAll()
         
+        // Reset gameboard images
         p1 = cardSpot
         p2 = cardSpot
         p3 = cardSpot
@@ -652,14 +652,19 @@ struct ContentView: View {
         o6 = cardSpot
         o9 = cardSpot
         
+        // Reset tuples
         tupleP1 = (false,cardSpot)
         tupleP2 = (false,cardSpot)
         tupleO1 = (false,cardSpot)
         tupleO2 = (false,cardSpot)
         
+        // Reset game state
+        gameOn = true
+        roundsCount = 0
         playerScore = 0
         opponentScore = 0
         
+        // Reset switches
         opponentFourthHandCardSwitch = false
         opponentThirdHandCardSwitch = false
         opponentSecondHandCardSwitch = false
@@ -669,6 +674,7 @@ struct ContentView: View {
         playerSecondHandCardSwitch = false
         playerFirstHandCardSwitch = false
         
+        // Reset inter values
         playerFirstInterValue = 0
         playerSecondInterValue = 0
         playerThirdInterValue = 0
@@ -678,6 +684,7 @@ struct ContentView: View {
         opponentThirdInterValue = 0
         opponentFourthInterValue = 0
         
+        // Reset card faces
         playerFirstCardFace = cardSpot
         playerSecondCardFace = cardSpot
         playerThirdCardFace = cardSpot
@@ -687,6 +694,7 @@ struct ContentView: View {
         opponentThirdCardFace = cardSpot
         opponentFourthCardFace = cardSpot
         
+        // Reset inter cards
         playerFirstInterCard = cardSpot
         playerSecondInterCard = cardSpot
         playerThirdInterCard = cardSpot
@@ -696,64 +704,20 @@ struct ContentView: View {
         opponentThirdInterCard = cardSpot
         opponentFourthInterCard = cardSpot
         
-        /* Sweeping through a gameboard, removing all cards. */
+        // Reset game board
         for position in 0...playerGameboard.count - 1 {
             playerGameboard[position].Taken = false
             playerGameboard[position].Image = cardSpot
             opponentGameboard[position].Taken = false
             opponentGameboard[position].Image = cardSpot    }
         
-        /* Reseting the dealer's deck */
+        // Reset Dealer's deck
         for everyCard in 0...dealerCards.count - 1 {
             dealerCards[everyCard].Taken = false    }
-
-        /* Creating arrays of ten deck cards and four hand cards for a player. */
-        for _ in 1...10  {
-            interCard = Int.random(in: 0..<deck.count)
-            repeat  {
-                while (playersHand.contains(deck[interCard].Value))    {
-                print("duplicate")
-                interCard = Int.random(in: 0..<deck.count)  }
-                playersHand.append(deck[interCard].Value)
-                positionPlayerHand.append(interCard)
-                interCard = Int.random(in: 0..<deck.count)
-            }   while !playersHand.contains(deck[interCard].Value) && playersHand.capacity == 9 }   // End of Ten Random Cards
-            
-        for _ in 1...4  {
-            interCard = Int.random(in: 0..<playersHand.count)
-            repeat  {
-                while (playerPlayingHand.contains(deck[interCard].Value))    {
-                print("duplicate")
-                interCard = Int.random(in: 0..<playersHand.count)   }
-                print(interCard)
-                playerPlayingHand.append(deck[interCard].Value)
-                positionPlayerPlayingHand.append(interCard)
-                interCard = Int.random(in: 0..<playersHand.count)
-            }   while !playerPlayingHand.contains(playersHand[interCard]) && playerPlayingHand.capacity == 3    }   // End of Four Random Cards
         
-    /* Creating arrays of ten deck and four hand cards for an opponent. */
-    for _ in 1...10 {
-        interCard = Int.random(in: 0..<deck.count)
-        repeat  {
-            while (opponentsHand.contains(deck[interCard].Value))    {
-            print("duplicate")
-            interCard = Int.random(in: 0..<deck.count)  }
-            opponentsHand.append(deck[interCard].Value)
-            positionOpponentHand.append(interCard)
-            interCard = Int.random(in: 0..<deck.count)
-        }   while !opponentsHand.contains(deck[interCard].Value) && opponentsHand.capacity == 9 }   // End of Ten Random Cards
-        
-    for _ in 1...4  {
-        interCard = Int.random(in: 0..<opponentsHand.count)
-        repeat  {
-            while (opponentPlayingHand.contains(deck[interCard].Value))    {
-            print("duplicate")
-            interCard = Int.random(in: 0..<opponentsHand.count) }
-            print(interCard)
-            opponentPlayingHand.append(deck[interCard].Value)
-            positionOpponentPlayingHand.append(interCard)
-            interCard = Int.random(in: 0..<opponentsHand.count)
-        }   while !opponentPlayingHand.contains(opponentsHand[interCard]) && opponentPlayingHand.capacity == 3  }   // End of Four Random Cards
+        // Initialize Player's and Opponent's Decks and hands
+        initializePlayerDeckAndHand()
+        initializeOpponentDeckAndHand()
         
         print(" ")
         print("Player Values: ")
@@ -762,6 +726,15 @@ struct ContentView: View {
         print("Opponent Values: ")
         print(opponentPlayingHand)
         
+        // Set up initial cards values and faces
+        setUpInitialCardStates()
+        
+        // Game is now ready - first turn will be triggered by user action
+        print("New game started - ready for first turn")
+        
+    }   // End of newGame()
+    
+    func setUpInitialCardStates() {
         playerFirstInterValue = deck[positionPlayerPlayingHand[0]].Value
         playerSecondInterValue = deck[positionPlayerPlayingHand[1]].Value
         playerThirdInterValue = deck[positionPlayerPlayingHand[2]].Value
@@ -790,11 +763,62 @@ struct ContentView: View {
         playerFirstInterCard = deck[positionPlayerPlayingHand[0]].Image
         playerSecondInterCard = deck[positionPlayerPlayingHand[1]].Image
         playerThirdInterCard = deck[positionPlayerPlayingHand[2]].Image
-        playerFourthInterCard = deck[positionPlayerPlayingHand[3]].Image    }   // End of newGame()
+        playerFourthInterCard = deck[positionPlayerPlayingHand[3]].Image
+    }
     
+        func initializePlayerDeckAndHand() {
+            /* Creating arrays of ten deck cards and four hand cards for a player. */
+            for _ in 1...10  {
+                interCard = Int.random(in: 0..<deck.count)
+                repeat  {
+                    while (playersHand.contains(deck[interCard].Value))    {
+                    print("duplicate")
+                    interCard = Int.random(in: 0..<deck.count)  }
+                    playersHand.append(deck[interCard].Value)
+                    positionPlayerHand.append(interCard)
+                    interCard = Int.random(in: 0..<deck.count)
+                }   while !playersHand.contains(deck[interCard].Value) && playersHand.capacity == 9 }   // End of Ten Random Cards
+                
+            for _ in 1...4  {
+                interCard = Int.random(in: 0..<playersHand.count)
+                repeat  {
+                    while (playerPlayingHand.contains(deck[interCard].Value))    {
+                    print("duplicate")
+                    interCard = Int.random(in: 0..<playersHand.count)   }
+                    print(interCard)
+                    playerPlayingHand.append(deck[interCard].Value)
+                    positionPlayerPlayingHand.append(interCard)
+                    interCard = Int.random(in: 0..<playersHand.count)
+                }   while !playerPlayingHand.contains(playersHand[interCard]) && playerPlayingHand.capacity == 3    }   // End of Four Random Cards
+        } // End of initializePlayerDeckAndHand
+        
+        func initializeOpponentDeckAndHand() {
+                for _ in 1...10 {
+                    interCard = Int.random(in: 0..<deck.count)
+                    repeat  {
+                        while (opponentsHand.contains(deck[interCard].Value))    {
+                        print("duplicate")
+                        interCard = Int.random(in: 0..<deck.count)  }
+                        opponentsHand.append(deck[interCard].Value)
+                        positionOpponentHand.append(interCard)
+                        interCard = Int.random(in: 0..<deck.count)
+                    }   while !opponentsHand.contains(deck[interCard].Value) && opponentsHand.capacity == 9 }   // End of Ten Random Cards
+                        
+                for _ in 1...4  {
+                    interCard = Int.random(in: 0..<opponentsHand.count)
+                    repeat  {
+                        while (opponentPlayingHand.contains(deck[interCard].Value))    {
+                        print("duplicate")
+                        interCard = Int.random(in: 0..<opponentsHand.count) }
+                        print(interCard)
+                        opponentPlayingHand.append(deck[interCard].Value)
+                        positionOpponentPlayingHand.append(interCard)
+                        interCard = Int.random(in: 0..<opponentsHand.count)
+                    }   while !opponentPlayingHand.contains(opponentsHand[interCard]) && opponentPlayingHand.capacity == 3  } }
+                
+                
         /* Setting up decks, hands for a new round. */
         func newRound()  {
-            
             playersHand.removeAll()
             playerPlayingHand.removeAll()
             
@@ -1062,7 +1086,7 @@ struct ContentView: View {
                 /*case 3  :*/   opponentMove()
                                 checkGameStatus()
                 /*case 10 :*/   print("End of turn")
-                /*default :*/   print("turn : "/*,  turnCount*/)
+            /*default :*/   print("turn : " , turnCount)
         //        }  // End of Switch
         //    }  //End of for loop
         }  // End of oneTurn
