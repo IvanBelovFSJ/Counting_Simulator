@@ -318,7 +318,7 @@ struct ContentView: View {
                 .padding()
                 .foregroundColor(/*@START_MENU_TOKEN@*/.pink/*@END_MENU_TOKEN@*/)}   }   // End of CurrentScoreButton
 
-    /* Stylizing for a card. */
+    // Card's style
     struct PlayerHandButton: ButtonStyle  {
         func makeBody(configuration: Configuration) -> some View {
             configuration.label

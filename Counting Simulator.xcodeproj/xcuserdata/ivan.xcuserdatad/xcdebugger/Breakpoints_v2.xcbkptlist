@@ -96,7 +96,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "935"
             endingLineNumber = "935"
-            landmarkName = "startGame()"
+            landmarkName = "stand()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -112,7 +112,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "941"
             endingLineNumber = "941"
-            landmarkName = "startGame()"
+            landmarkName = "hitOpponent()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -128,7 +128,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "925"
             endingLineNumber = "925"
-            landmarkName = "startGame()"
+            landmarkName = "oneTurn()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
