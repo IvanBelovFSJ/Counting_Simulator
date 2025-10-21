@@ -169,13 +169,8 @@ var turnCount = 0;
 /* Main method */
 struct ContentView: View {
     
-    @State private var playerColorOne: Color = .gray
-    @State private var playerColorTwo: Color = .gray
-    @State private var playerColorThree: Color = .gray
-    
-    @State private var opponentColorOne: Color = .gray
-    @State private var opponentColorTwo: Color = .gray
-    @State private var opponentColorThree: Color = .gray
+    @State private var playerColors: [Color] = [.gray, .gray, .gray]
+    @State private var opponentColors: [Color] = [.gray, .gray, .gray]
 
     struct myMenuStyle: MenuStyle {
         func makeBody(configuration: Configuration) -> some View {
@@ -464,31 +459,69 @@ struct ContentView: View {
     @State private var o6: Image = cardSpot
     @State private var o9: Image = cardSpot
     
-    /* Scanning for a win condition */
     func checkGameStatus() {
+        guard roundsCount < 3 else { return } // max 3 rounds
+        var playerWon = false
+        var opponentWon = false
+        
         if playerScore == targetScore {
-            print("you win a round")
-            playerColorOne = .green
-            opponentColorOne = .red
-            return  }
+            playerWon = true
+        } else if opponentScore == targetScore {
+            opponentWon = true
+        } else if playerScore > targetScore {
+            opponentWon = true
+        } else if opponentScore > targetScore {
+            playerWon = true
+        }
         
-        if opponentScore == targetScore {
-            print("opponent wins a round")
-            opponentColorOne = .green
-            playerColorOne = .red
-            return  }
-        
-        if playerScore > targetScore {
-            print("you lost a round")
-            playerColorOne = .red
-            opponentColorOne = .green
-            return  }
-        
-        if opponentScore > targetScore {
-            print("opponent lost a round")
-            playerColorOne = .green
-            opponentColorOne = .red
-            return  }   }   // End of checkGameStatus
+        if playerWon {
+            print("You win a round")
+            playerColors[roundsCount] = .green
+            opponentColors[roundsCount] = .red
+            roundsCount += 1
+            
+            resetGameBoardForGameOrRound()
+            
+            // Initialize Player's and Opponent's Decks and hands
+            initializePlayerDeckAndHand()
+            initializeOpponentDeckAndHand()
+            
+            print(" ")
+            print("Player Values: ")
+            print(playerPlayingHand)
+            print(" ")
+            print("Opponent Values: ")
+            print(opponentPlayingHand)
+            
+            setUpInitialCardStates()
+            
+            turnCount = 0
+            
+        } else if opponentWon {
+            print("Opponent wins a round")
+            playerColors[roundsCount] = .red
+            opponentColors[roundsCount] = .green
+            roundsCount += 1
+            
+            resetGameBoardForGameOrRound()
+            
+            // Initialize Player's and Opponent's Decks and hands
+            initializePlayerDeckAndHand()
+            initializeOpponentDeckAndHand()
+            
+            print(" ")
+            print("Player Values: ")
+            print(playerPlayingHand)
+            print(" ")
+            print("Opponent Values: ")
+            print(opponentPlayingHand)
+            
+            setUpInitialCardStates()
+            
+            turnCount = 0
+            
+        }
+    }
     
     /* Placing a selected card from a hand onto a gameboard. */
     func selectPlayerFirstCard()   {
@@ -622,12 +655,12 @@ struct ContentView: View {
         roundsCount = 0
         
         // Reset progress indicators
-        playerColorOne = .gray
-        playerColorTwo = .gray
-        playerColorThree = .gray
-        opponentColorOne = .gray
-        opponentColorTwo = .gray
-        opponentColorThree = .gray
+        playerColors[0] = .gray
+        playerColors[1] = .gray
+        playerColors[2] = .gray
+        opponentColors[0] = .gray
+        opponentColors[1] = .gray
+        opponentColors[2] = .gray
         
         resetGameBoardForGameOrRound()
         
@@ -784,17 +817,18 @@ struct ContentView: View {
                     positionPlayerHand.append(interCard)
                     interCard = Int.random(in: 0..<deck.count)
                 }   while !playersHand.contains(deck[interCard].Value) && playersHand.capacity == 9 }
-            for _ in 1...4  {
-                interCard = Int.random(in: 0..<playersHand.count)
-                repeat  {
-                    while (playerPlayingHand.contains(deck[interCard].Value))    {
-                    print("duplicate")
-                    interCard = Int.random(in: 0..<playersHand.count)   }
-                    print(interCard)
-                    playerPlayingHand.append(deck[interCard].Value)
-                    positionPlayerPlayingHand.append(interCard)
+                for _ in 1...4  {
                     interCard = Int.random(in: 0..<playersHand.count)
-                }   while !playerPlayingHand.contains(playersHand[interCard]) && playerPlayingHand.capacity == 3 } }
+                    repeat  {
+                        while (playerPlayingHand.contains(deck[interCard].Value))    {
+                            print("duplicate")
+                            interCard = Int.random(in: 0..<playersHand.count)   }
+                        print(interCard)
+                        playerPlayingHand.append(deck[interCard].Value)
+                        positionPlayerPlayingHand.append(interCard)
+                        interCard = Int.random(in: 0..<playersHand.count)
+                    }   while !playerPlayingHand.contains(playersHand[interCard]) && playerPlayingHand.capacity == 3 }
+                }
         
         func initializeOpponentDeckAndHand() {
             for _ in 1...10 {
@@ -807,37 +841,18 @@ struct ContentView: View {
                     positionOpponentHand.append(interCard)
                     interCard = Int.random(in: 0..<deck.count)
                 }   while !opponentsHand.contains(deck[interCard].Value) && opponentsHand.capacity == 9 }
-            for _ in 1...4  {
-                interCard = Int.random(in: 0..<opponentsHand.count)
-                repeat  {
-                    while (opponentPlayingHand.contains(deck[interCard].Value))    {
-                    print("duplicate")
-                    interCard = Int.random(in: 0..<opponentsHand.count) }
-                    print(interCard)
-                    opponentPlayingHand.append(deck[interCard].Value)
-                    positionOpponentPlayingHand.append(interCard)
+                for _ in 1...4  {
                     interCard = Int.random(in: 0..<opponentsHand.count)
-            }   while !opponentPlayingHand.contains(opponentsHand[interCard]) && opponentPlayingHand.capacity == 3  } }
-                
-                    // Setting up gameboard and hands for new round
-                    func newRound()  {
-                        
-                        resetGameBoardForGameOrRound()
-                        
-                        // Initialize Player's and Opponent's Decks and hands
-                        initializePlayerDeckAndHand()
-                        initializeOpponentDeckAndHand()
-                        
-                        print(" ")
-                        print("Player Values: ")
-                        print(playerPlayingHand)
-                        print(" ")
-                        print("Opponent Values: ")
-                        print(opponentPlayingHand)
-                        
-                        setUpInitialCardStates()
-                        
-                    }   // End of newRound()
+                    repeat  {
+                        while (opponentPlayingHand.contains(deck[interCard].Value))    {
+                            print("duplicate")
+                            interCard = Int.random(in: 0..<opponentsHand.count) }
+                        print(interCard)
+                        opponentPlayingHand.append(deck[interCard].Value)
+                        positionOpponentPlayingHand.append(interCard)
+                        interCard = Int.random(in: 0..<opponentsHand.count)
+                    }   while !opponentPlayingHand.contains(opponentsHand[interCard]) && opponentPlayingHand.capacity == 3  }
+                }
         
     /* Deals a card to both players from the dealer deck. */
                 func dealerMove() {
@@ -918,17 +933,22 @@ struct ContentView: View {
             } // End of player's move
     
                 func startGame()    {
-                    newGame();
-                    repeat  {   oneTurn()
-                    }   while (booleanTurn == false && booleanGame == true) }
+                    newGame()
+                        repeat  {   oneTurn()
+                        }   while (booleanTurn == false && booleanGame == true)
+                    }   // End of startgame
                     
                     func oneTurn()   {
                         booleanTurn = true
                         dealerMove()
+                        print("Dealer move")
                         opponentMove()
+                        print("Opponent move")
                         checkGameStatus()
                         print("End of turn")
+                        print("round : " , roundsCount)
                         print("turn : " , turnCount)
+                        turnCount+=1
                     }  // End of oneTurn
                     
                     // Skipping or Standing a move
@@ -982,20 +1002,22 @@ struct ContentView: View {
                                 HStack()  {   //  Players Scores Area
                                     HStack  {   // Player Score ( from right to left )
                                         Button("")   {  }
-                                            .buttonStyle(RoundButtonPlayerOne(outcomeColor: playerColorOne))
+                                            .buttonStyle(RoundButtonPlayerOne(outcomeColor: playerColors[0]))
                                         Button("")   {  }
-                                            .buttonStyle(RoundButtonPlayerTwo())
+                                            .buttonStyle(RoundButtonPlayerTwo(outcomeColor: playerColors[1]))
                                         Button("")   {  }
-                                            .buttonStyle(RoundButtonPlayerThree())
+                                            .buttonStyle(RoundButtonPlayerThree(outcomeColor: playerColors[2]))
                                     }   // End of Player Score
                                     Spacer()
                                     HStack()  {   // Opponent Score ( from right to left )
                                         Button("")   {  }
-                                            .buttonStyle(RoundButtonOpponentThree())
+                                            .buttonStyle(RoundButtonOpponentThree(
+                                                outcomeColor: opponentColors[2]
+                                            ))
                                         Button("")   {  }
-                                            .buttonStyle(RoundButtonOpponentTwo())
+                                            .buttonStyle(RoundButtonOpponentTwo(outcomeColor: opponentColors[1]))
                                         Button("")   {  }
-                                            .buttonStyle(RoundButtonOpponentOne(outcomeColor: opponentColorOne))
+                                            .buttonStyle(RoundButtonOpponentOne(outcomeColor: opponentColors[0]))
                                     }   // End of Opponent Score
                                 }   // Player and Opponent Score Area
                                 .padding(.all, 30.0)   // End of Players Scores
