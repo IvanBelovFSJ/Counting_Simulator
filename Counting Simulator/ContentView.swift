@@ -13,136 +13,46 @@ extension Color {
     static let lightStart = Color(red: 60 / 255, green: 160 / 255, blue: 240 / 255)
     static let lightEnd = Color(red: 30 / 255, green: 60 / 255, blue: 120 / 255)    }
 
-extension LinearGradient    {
-    init(_ Colors: Color...) {
-        self.init(gradient: Gradient(colors: Colors), startPoint: .topLeading, endPoint:  .bottomTrailing)  }   }   // End of LinearGradient
+extension LinearGradient    {   init(_ Colors: Color...) {
+        self.init(gradient: Gradient(colors: Colors),startPoint:.topLeading,endPoint:.bottomTrailing)}}
 
 /* Sets of immutable positive(red) and negative(blue) cards from 1 to 9. */
-let cardP1:Image = Image("Card_Plus_1")
-let cardP2:Image = Image("Card_Plus_2")
-let cardP3:Image = Image("Card_Plus_3")
-let cardP4:Image = Image("Card_Plus_4")
-let cardP5:Image = Image("Card_Plus_5")
-let cardP6:Image = Image("Card_Plus_6")
-let cardP7:Image = Image("Card_Plus_7")
-let cardP8:Image = Image("Card_Plus_8")
-let cardP9:Image = Image("Card_Plus_9")
-let cardM1:Image = Image("Card_Minus_1")
-let cardM2:Image = Image("Card_Minus_2")
-let cardM3:Image = Image("Card_Minus_3")
-let cardM4:Image = Image("Card_Minus_4")
-let cardM5:Image = Image("Card_Minus_5")
-let cardM6:Image = Image("Card_Minus_6")
-let cardM7:Image = Image("Card_Minus_7")
-let cardM8:Image = Image("Card_Minus_8")
-let cardM9:Image = Image("Card_Minus_9")
+var card: [String: Image] = [:]
+var tupleCard: [String: (Value: Int, Image: Image, Path: String)] = [:]
+var dealerCardP: [(Taken: Bool, Image: Image, Value: Int)] = []
+var dealerCardM: [(Taken: Bool, Image: Image, Value: Int)] = []
+var dealerCards: [(Taken: Bool, Image: Image, Value: Int)] = []
+var deck: [(Taken: Bool, Image: Image, Value: Int)] = []
+var tuplePlayerHand: [(Taken: Bool, Image: Image, Value: Int, Path: String)] = []
+var tupleOpponentHand: [(Taken: Bool, Image: Image, Value: Int, Path: String)] = []
+
+/* These eighteen tuples represent a gameboard of eighteen cells(spots). */
+var tupleP: [(Taken: Bool, Image: Image)] = []
+var tupleO: [(Taken: Bool, Image: Image)] = []
+
+/* Keeping track of opponent and player gameboards. */
+var playerGameboard: [(Taken: Bool, Image: Image)] = []
+var opponentGameboard: [(Taken: Bool, Image: Image)] = []
+
+/* These eighteen images represent a gameboard of eighteen cells(spots). */
+let playerSpots: [Image] = (1...9).map { _ in Image("cardSpot")}
+let opponentSpots: [Image] = (1...9).map { _ in Image("cardSpot")}
 
 /* Cards suits for a player and an opponent. */
 let cardSpot:Image = Image("cardSpot")
 let opponentCardSuit:Image = Image("opponentCardsBackDesign")
 
-/* The tuples below represent eighteen cards available for a player to form a hand. */
-var tupleCardP1 = (Value:1,Image:cardP1, Path:"Card_Plus_1")
-var tupleCardP2 = (Value:2,Image:cardP2, Path:"Card_Plus_2")
-var tupleCardP3 = (Value:3,Image:cardP3, Path:"Card_Plus_3")
-var tupleCardP4 = (Value:4,Image:cardP4, Path:"Card_Plus_4")
-var tupleCardP5 = (Value:5,Image:cardP5, Path:"Card_Plus_5")
-var tupleCardP6 = (Value:6,Image:cardP6, Path:"Card_Plus_6")
-var tupleCardP7 = (Value:7,Image:cardP7, Path:"Card_Plus_7")
-var tupleCardP8 = (Value:8,Image:cardP8, Path:"Card_Plus_8")
-var tupleCardP9 = (Value:9,Image:cardP9, Path:"Card_Plus_9")
-var tupleCardM1 = (Value:-1,Image:cardM1, Path:"Card_Minus_1")
-var tupleCardM2 = (Value:-2,Image:cardM2, Path:"Card_Minus_2")
-var tupleCardM3 = (Value:-3,Image:cardM3, Path:"Card_Minus_3")
-var tupleCardM4 = (Value:-4,Image:cardM4, Path:"Card_Minus_4")
-var tupleCardM5 = (Value:-5,Image:cardM5, Path:"Card_Minus_5")
-var tupleCardM6 = (Value:-6,Image:cardM6, Path:"Card_Minus_6")
-var tupleCardM7 = (Value:-4,Image:cardM4, Path:"Card_Minus_7")
-var tupleCardM8 = (Value:-5,Image:cardM5, Path:"Card_Minus_8")
-var tupleCardM9 = (Value:-6,Image:cardM6, Path:"Card_Minus_9")
-
-/* Dealer cards are used only once per match(turn). */
-var dealerCardPOne = (Taken:false,Image:cardP1, Value: 1)
-var dealerCardPTwo = (Taken:false,Image:cardP2, Value: 2)
-var dealerCardPThree = (Taken:false,Image:cardP3, Value: 3)
-var dealerCardPFour = (Taken:false,Image:cardP4, Value: 4)
-var dealerCardPFive = (Taken:false,Image:cardP5, Value: 5)
-var dealerCardPSix = (Taken:false,Image:cardP6, Value: 6)
-var dealerCardPSeven = (Taken:false,Image:cardP7, Value: 7)
-var dealerCardPEight = (Taken:false,Image:cardP8, Value: 8)
-var dealerCardPNine = (Taken:false,Image:cardP9, Value: 9)
-
-/* A set of nine cards representing dealer's cards to be dealt during each round */
-var dealerCards = [dealerCardPOne,dealerCardPTwo,dealerCardPThree,dealerCardPFour,dealerCardPFive,dealerCardPSix,dealerCardPSeven,dealerCardPEight,dealerCardPNine]
-
-/* These eighteen images represent a gameboard of eighteen cells(spots). */
-let p1:Image = Image("cardSpot")
-let p2:Image = Image("cardSpot")
-let p3:Image = Image("cardSpot")
-let p4:Image = Image("cardSpot")
-let p5:Image = Image("cardSpot")
-let p6:Image = Image("cardSpot")
-let p7:Image = Image("cardSpot")
-let p8:Image = Image("cardSpot")
-let p9:Image = Image("cardSpot")
-let o1:Image = Image("cardSpot")
-let o2:Image = Image("cardSpot")
-let o3:Image = Image("cardSpot")
-let o4:Image = Image("cardSpot")
-let o5:Image = Image("cardSpot")
-let o6:Image = Image("cardSpot")
-let o7:Image = Image("cardSpot")
-let o8:Image = Image("cardSpot")
-let o9:Image = Image("cardSpot")
-
-/* These eighteen tuples represent a gameboard of eighteen cells(spots). */
-var tupleP1 = (Taken:false,Image:p1)
-var tupleP2 = (Taken:false,Image:p2)
-var tupleP3 = (Taken:false,Image:p3)
-var tupleP4 = (Taken:false,Image:p4)
-var tupleP5 = (Taken:false,Image:p5)
-var tupleP6 = (Taken:false,Image:p6)
-var tupleP7 = (Taken:false,Image:p7)
-var tupleP8 = (Taken:false,Image:p8)
-var tupleP9 = (Taken:false,Image:p9)
-var tupleO1 = (Taken:false,Image:o1)
-var tupleO2 = (Taken:false,Image:o2)
-var tupleO3 = (Taken:false,Image:o3)
-var tupleO4 = (Taken:false,Image:o4)
-var tupleO5 = (Taken:false,Image:o5)
-var tupleO6 = (Taken:false,Image:o6)
-var tupleO7 = (Taken:false,Image:o7)
-var tupleO8 = (Taken:false,Image:o8)
-var tupleO9 = (Taken:false,Image:o9)
-
 /* Below arrays facilitate hands for both players. */
 let interImage:Image = Image("")
-
-var tuplePlayerHandOne = (Taken:false, Image: interImage, Value: 0, Path:"")
-var tuplePlayerHandTwo = (Taken:false, Image: interImage, Value: 0, Path:"")
-var tuplePlayerHandThree = (Taken:false, Image: interImage, Value: 0, Path:"")
-var tuplePlayerHandFour = (Taken:false, Image: interImage, Value: 0, Path:"")
-var tupleOpponentHandOne = (Taken:false, Image: interImage, Value: 0, Path:"")
-var tupleOpponentHandTwo = (Taken:false, Image: interImage, Value: 0, Path:"")
-var tupleOpponentHandThree = (Taken:false, Image: interImage, Value: 0, Path:"")
-var tupleOpponentHandFour = (Taken:false, Image: interImage, Value: 0, Path:"")
-
-/* A set of eighteen cards representing a deck for a player. */
-var deck = [tupleCardP1,tupleCardP2,tupleCardP3,tupleCardP4,tupleCardP5,tupleCardP6,tupleCardP7,tupleCardP8,tupleCardP9,tupleCardM1,tupleCardM2,tupleCardM3,tupleCardM4,tupleCardM5,tupleCardM6,tupleCardM7,tupleCardM8,tupleCardM9]
-
-/* Keeping track of opponent and player gameboards. */
-var playerGameboard = [tupleP1,tupleP2,tupleP3,tupleP4,tupleP5,tupleP6,tupleP7,tupleP8,tupleP9]
-
-var opponentGameboard = [tupleO1,tupleO2,tupleO3,tupleO4,tupleO5,tupleO6,tupleO7,tupleO8,tupleO9]
 
 /* Ten card deck for a player. Four cards used as a hand. */
 var playersHand:[Int] = []
 var playerPlayingHand:[Int] = []
-var playerHand = [tuplePlayerHandOne,tuplePlayerHandTwo,tuplePlayerHandThree,tuplePlayerHandFour]
+var playerHand : [(Taken: Bool, Image: Image, Value: Int, Path: String)] = []
 
 var opponentsHand:[Int] = []
 var opponentPlayingHand:[Int] = []
-var opponentHand = [tupleOpponentHandOne,tupleOpponentHandTwo,tupleOpponentHandThree,tupleOpponentHandFour]
+var opponentHand : [(Taken: Bool, Image: Image, Value: Int, Path: String)] = []
 
 var positionPlayerHand:[Int] = []
 var positionPlayerPlayingHand:[Int] = []
@@ -161,16 +71,72 @@ var playerSecondHandCardSwitch = false;
 var playerThirdHandCardSwitch = false;
 var playerFourthHandCardSwitch = false;
 
-var booleanTurn = false;
-var booleanGame = true;
-
 var turnCount = 0;
 
 /* Main method */
 struct ContentView: View {
     
-    @State private var playerColors: [Color] = [.gray, .gray, .gray]
-    @State private var opponentColors: [Color] = [.gray, .gray, .gray]
+    init() {
+        
+        for i in 1...9 {
+            card["P\(i)"] = Image("Card_Plus_\(i)")
+            card["M\(i)"] = Image("Card_Minus_\(i)")
+        }
+        
+        for i in 1...9 {
+            if let img = card["P\(i)"] {
+                tupleCard["P\(i)"] = (Value: i, Image: img, Path:"Card_Plus_\(i)")
+                
+            }
+            if let img = card["M\(i)"] {
+                tupleCard["M\(i)"] = (Value: -i, Image: img, Path:"Card_Minus_\(i)")
+                
+            }
+        }
+        
+        dealerCardP = Array(repeating: (Taken: false, Image: Image("placeholder"), Value: 0), count: 9)
+        dealerCardM = Array(repeating: (Taken: false, Image: Image("placeholder"), Value: 0), count: 9)
+        
+        for i in 0...8 {
+            if let img = card["P\(i)"] {
+                dealerCardP[i] = (Taken: false, Image: img, Value: i+1)
+                dealerCards.append(dealerCardP[i])
+                deck.append(dealerCardP[i])
+            }
+        }
+        
+        for i in 0...8 {
+            if let img = card["M\(i)"] {
+                dealerCardM[i] = (Taken: false, Image: img, Value: -i-1)
+                dealerCards.append(dealerCardM[i])
+                deck.append(dealerCardM[i])
+            }
+        }
+        
+        for i in 0...8 {
+            if let img = card["P\(i+1)"] {
+                tupleP.append((Taken: false, Image: img))
+                    
+                }
+            if let img = card["M\(i+1)"] {
+                tupleO.append((Taken: false, Image: img))
+                }
+            }
+        
+            tuplePlayerHand = Array(repeating: (Taken: false, Image: interImage, Value: 0, Path: ""), count: 4)
+            tupleOpponentHand = Array(repeating: (Taken: false, Image: interImage, Value: 0, Path: ""), count: 4)
+        
+            playerGameboard = Array(repeating: (Taken: false, Image: cardSpot), count: 9)
+            opponentGameboard = Array(repeating: (Taken: false, Image: cardSpot), count: 9)
+            
+            for i in 0..<4 {
+                tuplePlayerHand[i] = (Taken: false, Image: interImage, Value: 0, Path: "")
+                tupleOpponentHand[i] = (Taken: false, Image: interImage, Value: 0, Path: "")
+            }
+    }   // Enf of init()
+    
+    @State var playerColors: [Color] = [.gray, .gray, .gray]
+    @State var opponentColors: [Color] = [.gray, .gray, .gray]
 
     struct myMenuStyle: MenuStyle {
         func makeBody(configuration: Configuration) -> some View {
@@ -405,9 +371,11 @@ struct ContentView: View {
     
     @State private var isToggled = false
     
+    @State private var isPlayerTurn = false
+    @State private var playerHasActed = false
+    
     @State private var targetScore = 21
     
-    @State private var gameOn = true
     @State private var roundsCount = 0
     @State private var playerScore: Int = 0
     @State private var opponentScore: Int = 0
@@ -460,6 +428,9 @@ struct ContentView: View {
     @State private var o9: Image = cardSpot
     
     func checkGameStatus() {
+        
+        print(" Executing Game Status Check Function ")
+        
         guard roundsCount < 3 else { return } // max 3 rounds
         var playerWon = false
         var opponentWon = false
@@ -525,6 +496,7 @@ struct ContentView: View {
     
     /* Placing a selected card from a hand onto a gameboard. */
     func selectPlayerFirstCard()   {
+        guard isPlayerTurn else {return}
         while (playerFirstHandCardSwitch == false)    {
             for position in 0...playerGameboard.count  {
                 if (playerGameboard[position].Taken == false)   {
@@ -535,9 +507,11 @@ struct ContentView: View {
                     playerFirstInterValue = 0
                     playerFirstInterCard = cardSpot
                     playerFirstHandCardSwitch = true
-                    booleanTurn = false
                     break   }   }   }
+        playerHasActed = true
+        isPlayerTurn = false
         checkGameStatus()
+        nextTurn()
     }
     
     func selectPlayerSecondCard()   {
@@ -551,7 +525,6 @@ struct ContentView: View {
                     playerSecondInterValue = 0
                     playerSecondInterCard = cardSpot
                     playerSecondHandCardSwitch = true
-                    booleanTurn = false
                     break   }   }   }
         checkGameStatus()
     }
@@ -567,7 +540,6 @@ struct ContentView: View {
                     playerThirdInterValue = 0
                     playerThirdInterCard = cardSpot
                     playerThirdHandCardSwitch = true
-                    booleanTurn = false
                     break   }   }   }
         checkGameStatus()
     }
@@ -583,7 +555,6 @@ struct ContentView: View {
                     playerFourthInterValue = 0
                     playerFourthInterCard = cardSpot
                     playerFourthHandCardSwitch = true
-                    booleanTurn = false
                     break   }   }   }
         checkGameStatus()
     }
@@ -648,40 +619,6 @@ struct ContentView: View {
         checkGameStatus()
     }
     
-    /* Setting up decks, hands for a new game of three rounds. */
-    func newGame()  {
-        // Resetting state pertinent to a game and not a round
-        gameOn = true
-        roundsCount = 0
-        
-        // Reset progress indicators
-        playerColors[0] = .gray
-        playerColors[1] = .gray
-        playerColors[2] = .gray
-        opponentColors[0] = .gray
-        opponentColors[1] = .gray
-        opponentColors[2] = .gray
-        
-        resetGameBoardForGameOrRound()
-        
-        // Initialize Player's and Opponent's Decks and hands
-        initializePlayerDeckAndHand()
-        initializeOpponentDeckAndHand()
-        
-        print(" ")
-        print("Player Values: ")
-        print(playerPlayingHand)
-        print(" ")
-        print("Opponent Values: ")
-        print(opponentPlayingHand)
-        
-        // Set up initial cards values and faces
-        setUpInitialCardStates()
-        
-        // Game is now ready - first turn will be triggered by user action
-        print("New game started - ready for first turn")
-    }   // End of newGame()
-    
     func resetGameBoardForGameOrRound() {
         
         // Clear hands and positions
@@ -713,12 +650,6 @@ struct ContentView: View {
         o3 = cardSpot
         o6 = cardSpot
         o9 = cardSpot
-        
-        // Reset tuples
-        tupleP1 = (false,cardSpot)
-        tupleP2 = (false,cardSpot)
-        tupleO1 = (false,cardSpot)
-        tupleO2 = (false,cardSpot)
         
         // Reset game state
         playerScore = 0
@@ -857,8 +788,6 @@ struct ContentView: View {
     /* Deals a card to both players from the dealer deck. */
                 func dealerMove() {
                     
-                    checkGameStatus()
-                    
                     for position in 0...opponentGameboard.count - 1 {
                         var randomCardNum = Int.random(in: 0..<dealerCards.count - 1)
                         if (opponentGameboard[position].Taken == false)   {
@@ -906,9 +835,9 @@ struct ContentView: View {
                         // if one of those is not taken.
                         if (opponentGameboard[position].Taken == false)   {
                             // choose one card out of a hand of four cards.
-                            let randomCardNum = Int.random(in: 0..<opponentHand.count)
+                            let randomCardNum = Int.random(in: 0..<tupleOpponentHand.count)
                             // if a card was not yet played
-                            if (opponentHand[randomCardNum].Taken == false)   {
+                            if (tupleOpponentHand[randomCardNum].Taken == false)   {
                                 switch randomCardNum    {
                                 case 0  :   selectOpponentFirstCard()
                                 case 1  :   selectOpponentSecondCard()
@@ -919,43 +848,104 @@ struct ContentView: View {
                     if(interScore != playerScore)   {
                         if (playerScore == targetScore)  { print("opponent won") }
                         else if (playerScore >= targetScore) { print("opponent lost") }
-                        else { oneTurn() } }
+                        else { nextTurn() } }
                     checkGameStatus()
                     }   // End of opponentMove()
     
             // Player's move.
             func playerMove()   {
-                let interScore = playerScore
-                while ( interScore == playerScore ) {
-                    if (interScore > playerScore || interScore < playerScore)  {
-                        break; } // End of if statement
-                } // End of While loop
+                isPlayerTurn = true
+                playerHasActed = false
+                
+                print("🧍 Player’s turn — choose Hit or Stand")
+                
             } // End of player's move
     
                 func startGame()    {
-                    newGame()
-                        repeat  {   oneTurn()
-                        }   while (booleanTurn == false && booleanGame == true)
+                    // Resetting game and rounds counters
+                    roundsCount = 0
+                    turnCount = 0
+                    playerScore = 0
+                    opponentScore = 0
+                    
+                    // Reset progress indicators for both players
+                    for i in 0..<3 {
+                        playerColors[i] = .gray
+                        opponentColors[i] = .gray } // End of for loop
+                    
+                    // Initializing board and decks
+                    resetGameBoardForGameOrRound()
+                    initializePlayerDeckAndHand()
+                    initializeOpponentDeckAndHand()
+                    setUpInitialCardStates()
+                    
+                    // Start the first round
+                    nextRound()
                     }   // End of startgame
                     
-                    func oneTurn()   {
-                        booleanTurn = true
-                        dealerMove()
-                        print("Dealer move")
-                        opponentMove()
-                        print("Opponent move")
-                        checkGameStatus()
-                        print("End of turn")
-                        print("round : " , roundsCount)
-                        print("turn : " , turnCount)
+                    func nextRound()   {
+                        if roundsCount >= 3 {
+                            endGame()
+                            return
+                        }
+                        
                         turnCount+=1
-                    }  // End of oneTurn
+                        turnCount = 0
+                        print("🎯 Starting round \(roundsCount)")
+                        
+                        // Reset or clear playboards for this round
+                  //      resetGameBoardForGameOrRound()
+                        
+                        // Start the first turn of the round
+                        nextTurn()
+                    }  // End of nextRound
+                
+                func nextTurn(){
+                    // Should a round continue
+                    if isRoundOver() {
+                        print("✅ Round \(roundsCount) finished.")
+                        nextRound()
+                        return
+                    }
                     
+                    print("Turn \(turnCount + 1) begins")
+                    
+                    dealerMove()
+                    opponentMove()
+                    playerMove()
+                    
+                    checkGameStatus()
+                    print("End of turn \(turnCount + 1)")
+                    
+                    turnCount += 1
+                }   // End of nextTurn
+                    
+                func isRoundOver() -> Bool {
+                    return playerScore >= targetScore || opponentScore >= targetScore
+                }
+                
+                func endGame() {
+                    print("🏁 Game Over!")
+                    
+                    if playerScore > opponentScore {
+                        print("🎉 Player wins!")
+                    } else if opponentScore > playerScore {
+                        print("🤖 Opponent wins!")
+                    } else {
+                        print("🤝 It’s a tie!")
+                    }
+                }
+                
                     // Skipping or Standing a move
-                    func stand()    {
-                        dealerMove()
-                        opponentMove()
-                        print("standing")   }   // End of stand()
+                func stand()    {
+                    guard isPlayerTurn else {return}
+                    dealerMove()
+                    opponentMove()
+                    print("standing")
+                    playerHasActed = true
+                    isPlayerTurn = false
+                    nextTurn()
+                }   // End of stand()
                     
                     // Opponent's move.
                     func hitOpponent()  {
@@ -976,17 +966,17 @@ struct ContentView: View {
                             Color.offWhite
                             LinearGradient(Color.darkStart, Color.darkEnd)
                             VStack() {    // Main VStack
-                                HStack()    {
-                                    Spacer()
+    HStack()    {
+                            Spacer()
                                     Button(action:  startGame)  {
-                                        HStack()    {
+    HStack()    {
                                             Image(systemName: "arrowtriangle.right.circle.fill")
                                                 .renderingMode(.template)
                                                 .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
                                                 .foregroundColor(Color.offWhite)
                                                 .padding(10.0)
                                                 .frame(width: 0.0)
-                                            Spacer()
+                            Spacer()
                                             Text("NEW GAME")
                                                 .foregroundColor(Color.offWhite)
                                                 .font(.largeTitle)
@@ -996,132 +986,112 @@ struct ContentView: View {
                                     .padding(.vertical, 40.0)
                                     .buttonStyle(LightButtonStyle())
                                     .font(.largeTitle)
-                                    Spacer() }   // End of HStack
-                                Spacer()
-                                
-                                HStack()  {   //  Players Scores Area
-                                    HStack  {   // Player Score ( from right to left )
-                                        Button("")   {  }
-                                            .buttonStyle(RoundButtonPlayerOne(outcomeColor: playerColors[0]))
-                                        Button("")   {  }
-                                            .buttonStyle(RoundButtonPlayerTwo(outcomeColor: playerColors[1]))
-                                        Button("")   {  }
-                                            .buttonStyle(RoundButtonPlayerThree(outcomeColor: playerColors[2]))
+                            Spacer() }   // End of HStack
+                            Spacer()
+    HStack()  {   //  Players Scores Area
+    HStack  {   // Player Score ( from right to left )
+        Button("")   {  }.buttonStyle(RoundButtonPlayerOne(outcomeColor: playerColors[0]))
+        Button("")   {  }.buttonStyle(RoundButtonPlayerTwo(outcomeColor: playerColors[1]))
+        Button("")   {  }.buttonStyle(RoundButtonPlayerThree(outcomeColor: playerColors[2]))
                                     }   // End of Player Score
-                                    Spacer()
-                                    HStack()  {   // Opponent Score ( from right to left )
-                                        Button("")   {  }
-                                            .buttonStyle(RoundButtonOpponentThree(
-                                                outcomeColor: opponentColors[2]
-                                            ))
-                                        Button("")   {  }
-                                            .buttonStyle(RoundButtonOpponentTwo(outcomeColor: opponentColors[1]))
-                                        Button("")   {  }
-                                            .buttonStyle(RoundButtonOpponentOne(outcomeColor: opponentColors[0]))
+                            Spacer()
+    HStack()  {   // Opponent Score ( from right to left )
+        Button("")   {  }.buttonStyle(RoundButtonOpponentThree(outcomeColor: opponentColors[2]))
+        Button("")   {  }.buttonStyle(RoundButtonOpponentTwo(outcomeColor: opponentColors[1]))
+        Button("")   {  }.buttonStyle(RoundButtonOpponentOne(outcomeColor: opponentColors[0]))
                                     }   // End of Opponent Score
                                 }   // Player and Opponent Score Area
                                 .padding(.all, 30.0)   // End of Players Scores
                                 
-                                HStack()    {   // Match Scores spaced out apart
+    HStack()    {   // Match Scores spaced out apart
                                     Button("\(playerScore)")    {   };
                                     Button("\(opponentScore)")  {   }   }
                                 .padding(.horizontal)
                                 .buttonStyle(CurrentScoreButton())
-                                HStack()  {   // Player Area
-                                    VStack  {   // Player
-                                        Button(action: { selectPlayerFirstCard() }, label: { playerFirstCardFace} )
-                                            .scaleEffect(2)
-                                        Button(action: { selectPlayerSecondCard() }, label: { playerSecondCardFace} )
-                                            .scaleEffect(2)
-                                        Button(action: { selectPlayerThirdCard() }, label: { playerThirdCardFace} )
-                                            .scaleEffect(2)
-                                        Button(action: { selectPlayerFourthCard() }, label: { playerFourthCardFace} )
-                                        .scaleEffect(2) }
+    HStack()  {   // Player Area
+        VStack  {   // Player
+            Button(action: { selectPlayerFirstCard() }, label: { playerFirstCardFace} ).scaleEffect(2)
+            Button(action: { selectPlayerSecondCard() }, label: { playerSecondCardFace} ).scaleEffect(2)
+            Button(action: { selectPlayerThirdCard() }, label: { playerThirdCardFace} ).scaleEffect(2)
+            Button(action: { selectPlayerFourthCard() }, label: { playerFourthCardFace} ).scaleEffect(2) }
                                     .padding(.leading)   // End of Player Area
                                     .buttonStyle(PlayerHandButton())
-                                    VStack()    {
-                                        Spacer()
-                                        HStack()    {   // Player and Opponent Table
-                                            Spacer()
-                                            VStack  {   // Player Table
-                                                Button(action: { /*playCard()*/ }, label: { /*p1*/playerGameboard[0].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*p4*/playerGameboard[3].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*p7*/playerGameboard[6].Image } )
+        VStack()    {
+                        Spacer()
+    HStack()    {   // Player and Opponent Table
+                        Spacer()
+        VStack  {   // Player Table
+            Button(action: { /*playCard()*/ }, label: { /*p1*/playerGameboard[0].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*p4*/playerGameboard[3].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*p7*/playerGameboard[6].Image } )
                                             }   // End of Player Table
-                                            VStack  {   // Player Table
-                                                Button(action: { /*playCard()*/ }, label: { /*p2*/playerGameboard[1].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*p5*/playerGameboard[4].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*p8*/playerGameboard[7].Image } )
+        VStack  {   // Player Table
+            Button(action: { /*playCard()*/ }, label: { /*p2*/playerGameboard[1].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*p5*/playerGameboard[4].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*p8*/playerGameboard[7].Image } )
                                             }   // End of Player Table
-                                            VStack  {   // Player Table
-                                                Button(action: { /*playCard()*/ }, label: { /*p3*/playerGameboard[2].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*p6*/playerGameboard[5].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*p9*/playerGameboard[8].Image } )
+        VStack  {   // Player Table
+            Button(action: { /*playCard()*/ }, label: { /*p3*/playerGameboard[2].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*p6*/playerGameboard[5].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*p9*/playerGameboard[8].Image } )
                                             }   // End of Player Table
-                                            Spacer()
-                                            VStack  {   // Opponent Table
-                                                Button(action: { /*playCard()*/ }, label: { /*o3*/opponentGameboard[2].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*o6*/opponentGameboard[5].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*o9*/opponentGameboard[8].Image } )
+                        Spacer()
+        VStack  {   // Opponent Table
+            Button(action: { /*playCard()*/ }, label: { /*o3*/opponentGameboard[2].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*o6*/opponentGameboard[5].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*o9*/opponentGameboard[8].Image } )
                                             }   // End of Player Table
-                                            VStack  {   // Player Table
-                                                Button(action: { /*playCard()*/ }, label: { /*o2*/opponentGameboard[1].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*o5*/opponentGameboard[4].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*o8*/opponentGameboard[7].Image } )
+        VStack  {   // Player Table
+            Button(action: { /*playCard()*/ }, label: { /*o2*/opponentGameboard[1].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*o5*/opponentGameboard[4].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*o8*/opponentGameboard[7].Image } )
                                             }   // End of Player Table
-                                            VStack  {   // Player Table
-                                                Button(action: { /*playCard()*/ }, label: { /*o1*/opponentGameboard[0].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*o4*/opponentGameboard[3].Image } )
-                                                Button(action: { /*playCard()*/ }, label: { /*o7*/opponentGameboard[6].Image } )
+        VStack  {   // Player Table
+            Button(action: { /*playCard()*/ }, label: { /*o1*/opponentGameboard[0].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*o4*/opponentGameboard[3].Image } )
+            Button(action: { /*playCard()*/ }, label: { /*o7*/opponentGameboard[6].Image } )
                                             }   // End of Player and Opponent Table
-                                            Spacer()    }   // End of HStack
+                        Spacer()    }   // End of HStack
                                         .buttonStyle(GameboardButton())
-                                        Spacer()    }   // End of VStack
-                                    
-                                    VStack  {   // Opponent
-                                        Button(action: { selectOpponentFirstCard() }, label: { opponentFirstCardFace } )
-                                            .scaleEffect(2)
-                                        Button(action: { selectOpponentSecondCard() }, label: { opponentSecondCardFace } )
-                                            .scaleEffect(2)
-                                        Button(action: { selectOpponentThirdCard() }, label: { opponentThirdCardFace } )
-                                            .scaleEffect(2)
-                                        Button(action: { selectOpponentFourthCard() }, label: { opponentFourthCardFace} )
-                                        .scaleEffect(2) }
+                        Spacer()    }   // End of VStack
+        VStack  {   // Opponent
+            Button(action: { selectOpponentFirstCard() }, label: { opponentFirstCardFace } ).scaleEffect(2)
+            Button(action: { selectOpponentSecondCard() }, label: { opponentSecondCardFace } ).scaleEffect(2)
+            Button(action: { selectOpponentThirdCard() }, label: { opponentThirdCardFace } ).scaleEffect(2)
+            Button(action: { selectOpponentFourthCard() }, label: { opponentFourthCardFace} ).scaleEffect(2) }
                                     .padding(.trailing)
                                     .buttonStyle(OpponentHandButton())  }   // End of Player Area
-                                Spacer()
-                                HStack() {  Spacer()
+                        Spacer()
+    HStack() {          Spacer()
                                     // Hit Button
-                                    Button(action:  {   print("Hit Button Tapped"); oneTurn(); })  {
-                                        HStack()    {
+                                    Button(action:  {   print("Hit Button Tapped"); nextTurn(); })  {
+    HStack()    {
                                             Image(systemName: "arrow.clockwise.circle.fill")
                                                 .renderingMode(.template)
                                                 .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
                                                 .foregroundColor(Color.offWhite)
                                                 .padding(0.0)
                                                 .frame(width: 0.0)
-                                            Spacer()
+                        Spacer()
                                             Text("HIT")
                                                 .foregroundColor(Color.offWhite)
                                                 .font(.largeTitle)
                                                 .blendMode(/*@START_MENU_TOKEN@*/.hardLight/*@END_MENU_TOKEN@*/)
                                                 .padding(.vertical, 10)
                                             .padding(.horizontal, 10)   }   }   // End of Hit Button
-                                    
                                     .padding(.bottom)
                                     .buttonStyle(LightButtonStyle())
                                     .font(.largeTitle)
-                                    Spacer()
-                                    
+                        Spacer()
                                     // Stand Button
                                     Button(action:  {   print("Stand Button Tapped"); stand();   })  {
-                                        HStack()    {
+    HStack()    {
                                             Image(systemName: "xmark.circle.fill")
                                                 .renderingMode(.template)
                                                 .aspectRatio(contentMode: .fill)
                                                 .foregroundColor(Color.offWhite)
                                                 .frame(width: 0.0)
-                                            Spacer()
+                        Spacer()
                                             Text("STAND")
                                                 .foregroundColor(Color.offWhite)
                                                 .font(.largeTitle)
@@ -1132,14 +1102,13 @@ struct ContentView: View {
                                     .padding(.bottom)
                                     .buttonStyle(LightButtonStyle())
                                     .font(.largeTitle)
-                                    Spacer()    }   // End of Bottom HStack
+                        Spacer()    }   // End of Bottom HStack
                                 .buttonStyle(BlueButton())
                                 .padding(30)
-                                Spacer()
+                        Spacer()
                             }}// End of ZStack
                         .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)}
                 }   // End of ContentView
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group { ContentView()   }   }   }
