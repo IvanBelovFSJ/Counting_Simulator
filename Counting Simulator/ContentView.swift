@@ -62,14 +62,8 @@ var positionOpponentPlayingHand:[Int] = []
 var interCard = 0;
 
 /* Various logic switches. */
-var opponentFirstHandCardSwitch = false;
-var opponentSecondHandCardSwitch = false;
-var opponentThirdHandCardSwitch = false;
-var opponentFourthHandCardSwitch = false;
-var playerFirstHandCardSwitch = false;
-var playerSecondHandCardSwitch = false;
-var playerThirdHandCardSwitch = false;
-var playerFourthHandCardSwitch = false;
+var opponenetHandSwitch = Array(repeating: false, count: 4)
+var playerHandSwitch = Array(repeating: false, count: 4)
 
 var turnCount = 0;
 
@@ -497,7 +491,7 @@ struct ContentView: View {
     /* Placing a selected card from a hand onto a gameboard. */
     func selectPlayerFirstCard()   {
         guard isPlayerTurn else {return}
-        while (playerFirstHandCardSwitch == false)    {
+        while (playerHandSwitch[0] == false)    {
             for position in 0...playerGameboard.count  {
                 if (playerGameboard[position].Taken == false)   {
                     playerGameboard[position].Image = playerFirstInterCard
@@ -506,7 +500,7 @@ struct ContentView: View {
                     self.playerScore += playerFirstInterValue
                     playerFirstInterValue = 0
                     playerFirstInterCard = cardSpot
-                    playerFirstHandCardSwitch = true
+                    playerHandSwitch[0] = true
                     break   }   }   }
         playerHasActed = true
         isPlayerTurn = false
@@ -515,7 +509,7 @@ struct ContentView: View {
     }
     
     func selectPlayerSecondCard()   {
-        while (playerSecondHandCardSwitch == false)    {
+        while (playerHandSwitch[1] == false)    {
             for position in 0...playerGameboard.count  {
                 if (playerGameboard[position].Taken == false)   {
                     playerGameboard[position].Image = playerSecondInterCard
@@ -524,13 +518,13 @@ struct ContentView: View {
                     self.playerScore += playerSecondInterValue
                     playerSecondInterValue = 0
                     playerSecondInterCard = cardSpot
-                    playerSecondHandCardSwitch = true
+                    playerHandSwitch[1] = true
                     break   }   }   }
         checkGameStatus()
     }
     
     func selectPlayerThirdCard()   {
-        while (playerThirdHandCardSwitch == false)    {
+        while (playerHandSwitch[2] == false)    {
             for position in 0...playerGameboard.count  {
                 if (playerGameboard[position].Taken == false)   {
                     playerGameboard[position].Image = playerThirdInterCard
@@ -539,13 +533,13 @@ struct ContentView: View {
                     self.playerScore += playerThirdInterValue
                     playerThirdInterValue = 0
                     playerThirdInterCard = cardSpot
-                    playerThirdHandCardSwitch = true
+                    playerHandSwitch[2] = true
                     break   }   }   }
         checkGameStatus()
     }
     
     func selectPlayerFourthCard()   {
-        while (playerFourthHandCardSwitch == false)    {
+        while (playerHandSwitch[3] == false)    {
             for position in 0...playerGameboard.count  {
                 if (playerGameboard[position].Taken == false)   {
                     playerGameboard[position].Image = playerFourthInterCard
@@ -554,13 +548,13 @@ struct ContentView: View {
                     self.playerScore += playerFourthInterValue
                     playerFourthInterValue = 0
                     playerFourthInterCard = cardSpot
-                    playerFourthHandCardSwitch = true
+                    playerHandSwitch[3] = true
                     break   }   }   }
         checkGameStatus()
     }
     
     func selectOpponentFirstCard()   {
-        while (opponentFirstHandCardSwitch == false)    {
+        while (opponenetHandSwitch[0] == false)    {
             for position in 0...opponentGameboard.count  {
                 if (opponentGameboard[position].Taken == false)   {
                     opponentGameboard[position].Image = opponentFirstInterCard
@@ -569,13 +563,13 @@ struct ContentView: View {
                     self.opponentScore += opponentFirstInterValue
                     opponentFirstInterValue = 0
                     opponentFirstInterCard = cardSpot
-                    opponentFirstHandCardSwitch = true
+                    opponenetHandSwitch[0] = true
                     break   }   }   }
         checkGameStatus()
     }
     
     func selectOpponentSecondCard()   {
-        while (opponentSecondHandCardSwitch == false)   {
+        while (opponenetHandSwitch[1] == false)   {
             for position in 0...opponentGameboard.count  {
                 if (opponentGameboard[position].Taken == false)   {
                     opponentGameboard[position].Image = opponentSecondInterCard
@@ -584,13 +578,13 @@ struct ContentView: View {
                     self.opponentScore += opponentSecondInterValue
                     opponentSecondInterValue = 0
                     opponentSecondInterCard = cardSpot
-                    opponentSecondHandCardSwitch = true
+                    opponenetHandSwitch[1] = true
                     break   }   }   }
         checkGameStatus()
     }
     
     func selectOpponentThirdCard()   {
-        while (opponentThirdHandCardSwitch == false)    {
+        while (opponenetHandSwitch[2] == false)    {
             for position in 0...opponentGameboard.count  {
                 if (opponentGameboard[position].Taken == false)   {
                     opponentGameboard[position].Image = opponentThirdInterCard
@@ -599,13 +593,13 @@ struct ContentView: View {
                     self.opponentScore += opponentThirdInterValue
                     opponentThirdInterValue = 0
                     opponentThirdInterCard = cardSpot
-                    opponentThirdHandCardSwitch = true
+                    opponenetHandSwitch[2] = true
                     break   }   }   }
         checkGameStatus()
     }
     
     func selectOpponentFourthCard()   {
-        while (opponentFourthHandCardSwitch == false)    {
+        while (opponenetHandSwitch[3] == false)    {
             for position in 0...opponentGameboard.count  {
                 if (opponentGameboard[position].Taken == false)   {
                     opponentGameboard[position].Image = opponentFourthInterCard
@@ -614,7 +608,7 @@ struct ContentView: View {
                     self.opponentScore += opponentFourthInterValue
                     opponentFourthInterValue = 0
                     opponentFourthInterCard = cardSpot
-                    opponentFourthHandCardSwitch = true
+                    opponenetHandSwitch[3] = true
                     break   }   }   }
         checkGameStatus()
     }
@@ -656,14 +650,8 @@ struct ContentView: View {
         opponentScore = 0
         
         // Reset switches
-        opponentFourthHandCardSwitch = false
-        opponentThirdHandCardSwitch = false
-        opponentSecondHandCardSwitch = false
-        opponentFirstHandCardSwitch = false
-        playerFourthHandCardSwitch = false
-        playerThirdHandCardSwitch = false
-        playerSecondHandCardSwitch = false
-        playerFirstHandCardSwitch = false
+        opponenetHandSwitch = Array(repeating: false, count: opponenetHandSwitch.count)
+        playerHandSwitch = Array(repeating: false, count: opponenetHandSwitch.count)
         
         // Reset inter values
         playerFirstInterValue = 0
