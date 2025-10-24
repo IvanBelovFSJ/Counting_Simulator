@@ -374,14 +374,8 @@ struct ContentView: View {
     @State private var playerScore: Int = 0
     @State private var opponentScore: Int = 0
     
-    @State private var playerFirstInterValue: Int = 0
-    @State private var playerSecondInterValue: Int = 0
-    @State private var playerThirdInterValue: Int = 0
-    @State private var playerFourthInterValue: Int = 0
-    @State private var opponentFirstInterValue: Int = 0
-    @State private var opponentSecondInterValue: Int = 0
-    @State private var opponentThirdInterValue: Int = 0
-    @State private var opponentFourthInterValue: Int = 0
+    @State private var playerInterValue: [Int] = [0, 0, 0, 0]
+    @State private var opponentInterValue: [Int] = [0, 0, 0, 0]
     
     @State private var playerFirstCardFace: Image = cardSpot
     @State private var playerSecondCardFace: Image = cardSpot
@@ -497,8 +491,8 @@ struct ContentView: View {
                     playerGameboard[position].Image = playerFirstInterCard
                     playerGameboard[position].Taken = true
                     playerFirstCardFace = cardSpot
-                    self.playerScore += playerFirstInterValue
-                    playerFirstInterValue = 0
+                    self.playerScore += playerInterValue[0]
+                    playerInterValue[0] = 0
                     playerFirstInterCard = cardSpot
                     playerHandSwitch[0] = true
                     break   }   }   }
@@ -515,8 +509,8 @@ struct ContentView: View {
                     playerGameboard[position].Image = playerSecondInterCard
                     playerGameboard[position].Taken = true
                     playerSecondCardFace = cardSpot
-                    self.playerScore += playerSecondInterValue
-                    playerSecondInterValue = 0
+                    self.playerScore += playerInterValue[1]
+                    playerInterValue[1] = 0
                     playerSecondInterCard = cardSpot
                     playerHandSwitch[1] = true
                     break   }   }   }
@@ -530,8 +524,8 @@ struct ContentView: View {
                     playerGameboard[position].Image = playerThirdInterCard
                     playerGameboard[position].Taken = true
                     playerThirdCardFace = cardSpot
-                    self.playerScore += playerThirdInterValue
-                    playerThirdInterValue = 0
+                    self.playerScore += playerInterValue[2]
+                    playerInterValue[2] = 0
                     playerThirdInterCard = cardSpot
                     playerHandSwitch[2] = true
                     break   }   }   }
@@ -545,8 +539,8 @@ struct ContentView: View {
                     playerGameboard[position].Image = playerFourthInterCard
                     playerGameboard[position].Taken = true
                     playerFourthCardFace = cardSpot
-                    self.playerScore += playerFourthInterValue
-                    playerFourthInterValue = 0
+                    self.playerScore += playerInterValue[3]
+                    playerInterValue[3] = 0
                     playerFourthInterCard = cardSpot
                     playerHandSwitch[3] = true
                     break   }   }   }
@@ -560,8 +554,8 @@ struct ContentView: View {
                     opponentGameboard[position].Image = opponentFirstInterCard
                     opponentGameboard[position].Taken = true
                     opponentFirstCardFace = cardSpot
-                    self.opponentScore += opponentFirstInterValue
-                    opponentFirstInterValue = 0
+                    self.opponentScore += opponentInterValue[0]
+                    opponentInterValue[0] = 0
                     opponentFirstInterCard = cardSpot
                     opponenetHandSwitch[0] = true
                     break   }   }   }
@@ -575,8 +569,8 @@ struct ContentView: View {
                     opponentGameboard[position].Image = opponentSecondInterCard
                     opponentGameboard[position].Taken = true
                     opponentSecondCardFace = cardSpot
-                    self.opponentScore += opponentSecondInterValue
-                    opponentSecondInterValue = 0
+                    self.opponentScore += opponentInterValue[1]
+                    opponentInterValue[1] = 0
                     opponentSecondInterCard = cardSpot
                     opponenetHandSwitch[1] = true
                     break   }   }   }
@@ -590,8 +584,8 @@ struct ContentView: View {
                     opponentGameboard[position].Image = opponentThirdInterCard
                     opponentGameboard[position].Taken = true
                     opponentThirdCardFace = cardSpot
-                    self.opponentScore += opponentThirdInterValue
-                    opponentThirdInterValue = 0
+                    self.opponentScore += opponentInterValue[2]
+                    opponentInterValue[2] = 0
                     opponentThirdInterCard = cardSpot
                     opponenetHandSwitch[2] = true
                     break   }   }   }
@@ -605,8 +599,8 @@ struct ContentView: View {
                     opponentGameboard[position].Image = opponentFourthInterCard
                     opponentGameboard[position].Taken = true
                     opponentFourthCardFace = cardSpot
-                    self.opponentScore += opponentFourthInterValue
-                    opponentFourthInterValue = 0
+                    self.opponentScore += opponentInterValue[3]
+                    opponentInterValue[3] = 0
                     opponentFourthInterCard = cardSpot
                     opponenetHandSwitch[3] = true
                     break   }   }   }
@@ -654,14 +648,8 @@ struct ContentView: View {
         playerHandSwitch = Array(repeating: false, count: opponenetHandSwitch.count)
         
         // Reset inter values
-        playerFirstInterValue = 0
-        playerSecondInterValue = 0
-        playerThirdInterValue = 0
-        playerFourthInterValue = 0
-        opponentFirstInterValue = 0
-        opponentSecondInterValue = 0
-        opponentThirdInterValue = 0
-        opponentFourthInterValue = 0
+        playerInterValue = playerInterValue.map { _ in 0 }
+        opponentInterValue = opponentInterValue.map { _ in 0 }
         
         // Reset card faces
         playerFirstCardFace = cardSpot
@@ -696,15 +684,11 @@ struct ContentView: View {
     }
     
     func setUpInitialCardStates() {
-        playerFirstInterValue = deck[positionPlayerPlayingHand[0]].Value
-        playerSecondInterValue = deck[positionPlayerPlayingHand[1]].Value
-        playerThirdInterValue = deck[positionPlayerPlayingHand[2]].Value
-        playerFourthInterValue = deck[positionPlayerPlayingHand[3]].Value
-        opponentFirstInterValue = deck[positionOpponentPlayingHand[0]].Value
-        opponentSecondInterValue = deck[positionOpponentPlayingHand[1]].Value
-        opponentThirdInterValue = deck[positionOpponentPlayingHand[2]].Value
-        opponentFourthInterValue = deck[positionOpponentPlayingHand[3]].Value
-        
+        for i in 0..<playerInterValue.count {
+            playerInterValue[i] = deck[positionPlayerPlayingHand[i]].Value  }
+        for i in 0..<opponentInterValue.count {
+            opponentInterValue[i] = deck[positionOpponentPlayingHand[i]].Value  }
+
         playerFirstCardFace = deck[positionPlayerPlayingHand[0]].Image
         playerSecondCardFace = deck[positionPlayerPlayingHand[1]].Image
         playerThirdCardFace = deck[positionPlayerPlayingHand[2]].Image
