@@ -14,8 +14,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "612"
-            endingLineNumber = "612"
+            startingLineNumber = "505"
+            endingLineNumber = "505"
             landmarkName = "dealerMove()"
             landmarkType = "9">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "652"
-            endingLineNumber = "652"
+            startingLineNumber = "545"
+            endingLineNumber = "545"
             landmarkName = "opponentMove()"
             landmarkType = "9">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "735"
-            endingLineNumber = "735"
+            startingLineNumber = "628"
+            endingLineNumber = "628"
             landmarkName = "stand()"
             landmarkType = "9">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "745"
-            endingLineNumber = "745"
+            startingLineNumber = "638"
+            endingLineNumber = "638"
             landmarkName = "hitOpponent()"
             landmarkType = "9">
          </BreakpointContent>
@@ -78,8 +78,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "699"
-            endingLineNumber = "699"
+            startingLineNumber = "592"
+            endingLineNumber = "592"
             landmarkName = "nextRound()"
             landmarkType = "9">
          </BreakpointContent>
@@ -94,8 +94,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "564"
-            endingLineNumber = "564"
+            startingLineNumber = "457"
+            endingLineNumber = "457"
             landmarkName = "initializePlayerDeckAndHand()"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +110,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
             landmarkName = "ContentView"
             landmarkType = "14">
          </BreakpointContent>
@@ -126,8 +126,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "checkGameStatus()"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,8 +142,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "681"
-            endingLineNumber = "681"
+            startingLineNumber = "574"
+            endingLineNumber = "574"
             landmarkName = "startGame()"
             landmarkType = "9">
          </BreakpointContent>
@@ -158,8 +158,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "711"
-            endingLineNumber = "711"
+            startingLineNumber = "604"
+            endingLineNumber = "604"
             landmarkName = "nextTurn()"
             landmarkType = "9">
          </BreakpointContent>
@@ -174,9 +174,9 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "676"
-            endingLineNumber = "676"
-            landmarkName = "playerMove()"
+            startingLineNumber = "569"
+            endingLineNumber = "569"
+            landmarkName = "startGame()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -190,8 +190,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "718"
-            endingLineNumber = "718"
+            startingLineNumber = "611"
+            endingLineNumber = "611"
             landmarkName = "nextTurn()"
             landmarkType = "9">
          </BreakpointContent>
@@ -206,8 +206,8 @@
             filePath = "Counting Simulator/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
             landmarkName = "init()"
             landmarkType = "7">
          </BreakpointContent>
