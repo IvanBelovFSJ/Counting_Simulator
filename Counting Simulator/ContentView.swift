@@ -71,62 +71,39 @@ var turnCount = 0;
 struct ContentView: View {
     
     init() {
-        
         for i in 1...9 {
             card["P\(i)"] = Image("Card_Plus_\(i)")
             card["M\(i)"] = Image("Card_Minus_\(i)")
-        }
-        
-        for i in 1...9 {
             if let img = card["P\(i)"] {
-                tupleCard["P\(i)"] = (Value: i, Image: img, Path:"Card_Plus_\(i)")
-                
-            }
+                tupleCard["P\(i)"] = (Value: i, Image: img, Path:"Card_Plus_\(i)")  }
             if let img = card["M\(i)"] {
-                tupleCard["M\(i)"] = (Value: -i, Image: img, Path:"Card_Minus_\(i)")
-                
-            }
-        }
+                tupleCard["M\(i)"] = (Value: -i, Image: img, Path:"Card_Minus_\(i)")    }   }
         
         dealerCardP = Array(repeating: (Taken: false, Image: Image("placeholder"), Value: 0), count: 9)
         dealerCardM = Array(repeating: (Taken: false, Image: Image("placeholder"), Value: 0), count: 9)
         
         for i in 0...8 {
             if let img = card["P\(i)"] {
-                dealerCardP[i] = (Taken: false, Image: img, Value: i+1)
+                dealerCardP[i] = (Taken: false, Image: img, Value: i)
                 dealerCards.append(dealerCardP[i])
-                deck.append(dealerCardP[i])
-            }
-        }
-        
-        for i in 0...8 {
+                deck.append(dealerCardP[i]) }
             if let img = card["M\(i)"] {
-                dealerCardM[i] = (Taken: false, Image: img, Value: -i-1)
+                dealerCardM[i] = (Taken: false, Image: img, Value: -i)
                 dealerCards.append(dealerCardM[i])
-                deck.append(dealerCardM[i])
-            }
-        }
-        
-        for i in 0...8 {
+                deck.append(dealerCardM[i]) }
             if let img = card["P\(i+1)"] {
-                tupleP.append((Taken: false, Image: img))
-                    
-                }
+                tupleP.append((Taken: false, Image: img))   }
             if let img = card["M\(i+1)"] {
-                tupleO.append((Taken: false, Image: img))
-                }
-            }
+                tupleO.append((Taken: false, Image: img))   }   }
         
             tuplePlayerHand = Array(repeating: (Taken: false, Image: interImage, Value: 0, Path: ""), count: 4)
             tupleOpponentHand = Array(repeating: (Taken: false, Image: interImage, Value: 0, Path: ""), count: 4)
-        
             playerGameboard = Array(repeating: (Taken: false, Image: cardSpot), count: 9)
             opponentGameboard = Array(repeating: (Taken: false, Image: cardSpot), count: 9)
             
             for i in 0..<4 {
                 tuplePlayerHand[i] = (Taken: false, Image: interImage, Value: 0, Path: "")
-                tupleOpponentHand[i] = (Taken: false, Image: interImage, Value: 0, Path: "")
-            }
+                tupleOpponentHand[i] = (Taken: false, Image: interImage, Value: 0, Path: "")    }
     }   // Enf of init()
     
     @State var playerColors: [Color] = [.gray, .gray, .gray]
@@ -364,123 +341,65 @@ struct ContentView: View {
             )   .animation(nil) }   }   // End of DarkButtonStyle
     
     @State private var isToggled = false
-    
     @State private var isPlayerTurn = false
     @State private var playerHasActed = false
-    
     @State private var targetScore = 21
-    
     @State private var roundsCount = 0
     @State private var playerScore: Int = 0
     @State private var opponentScore: Int = 0
-    
     @State private var playerInterValue: [Int] = [0, 0, 0, 0]
     @State private var opponentInterValue: [Int] = [0, 0, 0, 0]
-    
-    @State private var playerFirstCardFace: Image = cardSpot
-    @State private var playerSecondCardFace: Image = cardSpot
-    @State private var playerThirdCardFace: Image = cardSpot
-    @State private var playerFourthCardFace: Image = cardSpot
-    @State private var opponentFirstCardFace: Image = cardSpot
-    @State private var opponentSecondCardFace: Image = cardSpot
-    @State private var opponentThirdCardFace: Image = cardSpot
-    @State private var opponentFourthCardFace: Image = cardSpot
-    
-    @State private var playerFirstInterCard: Image = cardSpot
-    @State private var playerSecondInterCard: Image = cardSpot
-    @State private var playerThirdInterCard: Image = cardSpot
-    @State private var playerFourthInterCard: Image = cardSpot
-    @State private var opponentFirstInterCard: Image = cardSpot
-    @State private var opponentSecondInterCard: Image = cardSpot
-    @State private var opponentThirdInterCard: Image = cardSpot
-    @State private var opponentFourthInterCard: Image = cardSpot
-    
-    /* (p)layer and (o)pponent numbered variables represent player and opponent board tiles. */
-    @State private var p1: Image = cardSpot
-    @State private var p2: Image = cardSpot
-    @State private var p3: Image = cardSpot
-    @State private var p4: Image = cardSpot
-    @State private var p5: Image = cardSpot
-    @State private var p6: Image = cardSpot
-    @State private var p7: Image = cardSpot
-    @State private var p8: Image = cardSpot
-    @State private var p9: Image = cardSpot
-    @State private var o1: Image = cardSpot
-    @State private var o4: Image = cardSpot
-    @State private var o7: Image = cardSpot
-    @State private var o2: Image = cardSpot
-    @State private var o5: Image = cardSpot
-    @State private var o8: Image = cardSpot
-    @State private var o3: Image = cardSpot
-    @State private var o6: Image = cardSpot
-    @State private var o9: Image = cardSpot
+    @State private var playerCardFace: [Image] = [cardSpot, cardSpot, cardSpot, cardSpot]
+    @State private var opponentCardFace: [Image] = [cardSpot, cardSpot, cardSpot, cardSpot]
+    @State private var playerInterCard: [Image] = [cardSpot, cardSpot, cardSpot, cardSpot]
+    @State private var opponentInterCard: [Image] = [cardSpot, cardSpot, cardSpot, cardSpot]
     
     func checkGameStatus() {
-        
         print(" Executing Game Status Check Function ")
         
         guard roundsCount < 3 else { return } // max 3 rounds
         var playerWon = false
         var opponentWon = false
         
-        if playerScore == targetScore {
-            playerWon = true
-        } else if opponentScore == targetScore {
-            opponentWon = true
-        } else if playerScore > targetScore {
-            opponentWon = true
-        } else if opponentScore > targetScore {
-            playerWon = true
-        }
+        if playerScore == targetScore { playerWon = true
+        } else if opponentScore == targetScore {    opponentWon = true
+        } else if playerScore > targetScore {   opponentWon = true
+        } else if opponentScore > targetScore { playerWon = true    }
         
         if playerWon {
             print("You win a round")
             playerColors[roundsCount] = .green
             opponentColors[roundsCount] = .red
             roundsCount += 1
-            
             resetGameBoardForGameOrRound()
-            
             // Initialize Player's and Opponent's Decks and hands
             initializePlayerDeckAndHand()
             initializeOpponentDeckAndHand()
-            
             print(" ")
             print("Player Values: ")
             print(playerPlayingHand)
             print(" ")
             print("Opponent Values: ")
             print(opponentPlayingHand)
-            
             setUpInitialCardStates()
-            
             turnCount = 0
-            
         } else if opponentWon {
             print("Opponent wins a round")
             playerColors[roundsCount] = .red
             opponentColors[roundsCount] = .green
             roundsCount += 1
-            
             resetGameBoardForGameOrRound()
-            
             // Initialize Player's and Opponent's Decks and hands
             initializePlayerDeckAndHand()
             initializeOpponentDeckAndHand()
-            
             print(" ")
             print("Player Values: ")
             print(playerPlayingHand)
             print(" ")
             print("Opponent Values: ")
             print(opponentPlayingHand)
-            
             setUpInitialCardStates()
-            
-            turnCount = 0
-            
-        }
-    }
+            turnCount = 0   }   }
     
     /* Placing a selected card from a hand onto a gameboard. */
     func selectPlayerFirstCard()   {
@@ -488,127 +407,118 @@ struct ContentView: View {
         while (playerHandSwitch[0] == false)    {
             for position in 0...playerGameboard.count  {
                 if (playerGameboard[position].Taken == false)   {
-                    playerGameboard[position].Image = playerFirstInterCard
+                    playerGameboard[position].Image = playerInterCard[0]
                     playerGameboard[position].Taken = true
-                    playerFirstCardFace = cardSpot
+                    playerCardFace[0] = cardSpot
                     self.playerScore += playerInterValue[0]
                     playerInterValue[0] = 0
-                    playerFirstInterCard = cardSpot
+                    playerInterCard[0] = cardSpot
                     playerHandSwitch[0] = true
                     break   }   }   }
         playerHasActed = true
         isPlayerTurn = false
         checkGameStatus()
-        nextTurn()
-    }
+        nextTurn()  }
     
     func selectPlayerSecondCard()   {
         while (playerHandSwitch[1] == false)    {
             for position in 0...playerGameboard.count  {
                 if (playerGameboard[position].Taken == false)   {
-                    playerGameboard[position].Image = playerSecondInterCard
+                    playerGameboard[position].Image = playerInterCard[1]
                     playerGameboard[position].Taken = true
-                    playerSecondCardFace = cardSpot
+                    playerCardFace[1] = cardSpot
                     self.playerScore += playerInterValue[1]
                     playerInterValue[1] = 0
-                    playerSecondInterCard = cardSpot
+                    playerInterCard[1] = cardSpot
                     playerHandSwitch[1] = true
                     break   }   }   }
-        checkGameStatus()
-    }
+                    checkGameStatus()   }
     
     func selectPlayerThirdCard()   {
         while (playerHandSwitch[2] == false)    {
             for position in 0...playerGameboard.count  {
                 if (playerGameboard[position].Taken == false)   {
-                    playerGameboard[position].Image = playerThirdInterCard
+                    playerGameboard[position].Image = playerInterCard[2]
                     playerGameboard[position].Taken = true
-                    playerThirdCardFace = cardSpot
+                    playerCardFace[2] = cardSpot
                     self.playerScore += playerInterValue[2]
                     playerInterValue[2] = 0
-                    playerThirdInterCard = cardSpot
+                    playerInterCard[2] = cardSpot
                     playerHandSwitch[2] = true
                     break   }   }   }
-        checkGameStatus()
-    }
+                    checkGameStatus()   }
     
     func selectPlayerFourthCard()   {
         while (playerHandSwitch[3] == false)    {
             for position in 0...playerGameboard.count  {
                 if (playerGameboard[position].Taken == false)   {
-                    playerGameboard[position].Image = playerFourthInterCard
+                    playerGameboard[position].Image = playerInterCard[3]
                     playerGameboard[position].Taken = true
-                    playerFourthCardFace = cardSpot
+                    playerCardFace[3] = cardSpot
                     self.playerScore += playerInterValue[3]
                     playerInterValue[3] = 0
-                    playerFourthInterCard = cardSpot
+                    playerInterCard[3] = cardSpot
                     playerHandSwitch[3] = true
                     break   }   }   }
-        checkGameStatus()
-    }
+                    checkGameStatus()   }
     
     func selectOpponentFirstCard()   {
         while (opponenetHandSwitch[0] == false)    {
             for position in 0...opponentGameboard.count  {
                 if (opponentGameboard[position].Taken == false)   {
-                    opponentGameboard[position].Image = opponentFirstInterCard
+                    opponentGameboard[position].Image = opponentInterCard[0]
                     opponentGameboard[position].Taken = true
-                    opponentFirstCardFace = cardSpot
+                    opponentCardFace[0] = cardSpot
                     self.opponentScore += opponentInterValue[0]
                     opponentInterValue[0] = 0
-                    opponentFirstInterCard = cardSpot
+                    opponentInterCard[0] = cardSpot
                     opponenetHandSwitch[0] = true
                     break   }   }   }
-        checkGameStatus()
-    }
+                    checkGameStatus()   }
     
     func selectOpponentSecondCard()   {
         while (opponenetHandSwitch[1] == false)   {
             for position in 0...opponentGameboard.count  {
                 if (opponentGameboard[position].Taken == false)   {
-                    opponentGameboard[position].Image = opponentSecondInterCard
+                    opponentGameboard[position].Image = opponentInterCard[1]
                     opponentGameboard[position].Taken = true
-                    opponentSecondCardFace = cardSpot
+                    opponentCardFace[1] = cardSpot
                     self.opponentScore += opponentInterValue[1]
                     opponentInterValue[1] = 0
-                    opponentSecondInterCard = cardSpot
+                    opponentInterCard[1] = cardSpot
                     opponenetHandSwitch[1] = true
                     break   }   }   }
-        checkGameStatus()
-    }
+                    checkGameStatus()   }
     
     func selectOpponentThirdCard()   {
         while (opponenetHandSwitch[2] == false)    {
             for position in 0...opponentGameboard.count  {
                 if (opponentGameboard[position].Taken == false)   {
-                    opponentGameboard[position].Image = opponentThirdInterCard
+                    opponentGameboard[position].Image = opponentInterCard[2]
                     opponentGameboard[position].Taken = true
-                    opponentThirdCardFace = cardSpot
+                    opponentCardFace[2] = cardSpot
                     self.opponentScore += opponentInterValue[2]
                     opponentInterValue[2] = 0
-                    opponentThirdInterCard = cardSpot
+                    opponentInterCard[2] = cardSpot
                     opponenetHandSwitch[2] = true
                     break   }   }   }
-        checkGameStatus()
-    }
+                    checkGameStatus()   }
     
     func selectOpponentFourthCard()   {
         while (opponenetHandSwitch[3] == false)    {
             for position in 0...opponentGameboard.count  {
                 if (opponentGameboard[position].Taken == false)   {
-                    opponentGameboard[position].Image = opponentFourthInterCard
+                    opponentGameboard[position].Image = opponentInterCard[3]
                     opponentGameboard[position].Taken = true
-                    opponentFourthCardFace = cardSpot
+                    opponentCardFace[3] = cardSpot
                     self.opponentScore += opponentInterValue[3]
                     opponentInterValue[3] = 0
-                    opponentFourthInterCard = cardSpot
+                    opponentInterCard[3] = cardSpot
                     opponenetHandSwitch[3] = true
                     break   }   }   }
-        checkGameStatus()
-    }
+                    checkGameStatus()   }
     
     func resetGameBoardForGameOrRound() {
-        
         // Clear hands and positions
         playersHand.removeAll()
         playerPlayingHand.removeAll()
@@ -619,95 +529,38 @@ struct ContentView: View {
         positionOpponentHand.removeAll()
         positionOpponentPlayingHand.removeAll()
         
-        // Reset gameboard images
-        p1 = cardSpot
-        p2 = cardSpot
-        p3 = cardSpot
-        p4 = cardSpot
-        p5 = cardSpot
-        p6 = cardSpot
-        p7 = cardSpot
-        p8 = cardSpot
-        p9 = cardSpot
-        o1 = cardSpot
-        o4 = cardSpot
-        o7 = cardSpot
-        o2 = cardSpot
-        o5 = cardSpot
-        o8 = cardSpot
-        o3 = cardSpot
-        o6 = cardSpot
-        o9 = cardSpot
-        
         // Reset game state
         playerScore = 0
         opponentScore = 0
-        
         // Reset switches
         opponenetHandSwitch = Array(repeating: false, count: opponenetHandSwitch.count)
         playerHandSwitch = Array(repeating: false, count: opponenetHandSwitch.count)
-        
-        // Reset inter values
+        // Reset inter values, inter cards and card faces
         playerInterValue = playerInterValue.map { _ in 0 }
         opponentInterValue = opponentInterValue.map { _ in 0 }
-        
-        // Reset card faces
-        playerFirstCardFace = cardSpot
-        playerSecondCardFace = cardSpot
-        playerThirdCardFace = cardSpot
-        playerFourthCardFace = cardSpot
-        opponentFirstCardFace = cardSpot
-        opponentSecondCardFace = cardSpot
-        opponentThirdCardFace = cardSpot
-        opponentFourthCardFace = cardSpot
-        
-        // Reset inter cards
-        playerFirstInterCard = cardSpot
-        playerSecondInterCard = cardSpot
-        playerThirdInterCard = cardSpot
-        playerFourthInterCard = cardSpot
-        opponentFirstInterCard = cardSpot
-        opponentSecondInterCard = cardSpot
-        opponentThirdInterCard = cardSpot
-        opponentFourthInterCard = cardSpot
-        
+        playerInterCard = playerInterValue.map { _ in cardSpot }
+        opponentInterCard = opponentInterCard.map { _ in cardSpot }
+        playerCardFace = playerCardFace.map { _ in cardSpot }
+        opponentCardFace = opponentCardFace.map { _ in cardSpot }
         // Reset game board
         for position in 0...playerGameboard.count - 1 {
             playerGameboard[position].Taken = false
             playerGameboard[position].Image = cardSpot
             opponentGameboard[position].Taken = false
             opponentGameboard[position].Image = cardSpot    }
-        
         // Reset Dealer's deck
         for everyCard in 0...dealerCards.count - 1 {
-            dealerCards[everyCard].Taken = false    }
-    }
+            dealerCards[everyCard].Taken = false    }   }
     
     func setUpInitialCardStates() {
         for i in 0..<playerInterValue.count {
-            playerInterValue[i] = deck[positionPlayerPlayingHand[i]].Value  }
-        for i in 0..<opponentInterValue.count {
-            opponentInterValue[i] = deck[positionOpponentPlayingHand[i]].Value  }
+            playerInterValue[i] = deck[positionPlayerPlayingHand[i]].Value
+            opponentInterValue[i] = deck[positionOpponentPlayingHand[i]].Value
+            playerCardFace[i] = deck[positionPlayerPlayingHand[i]].Image
+            playerInterCard[i] = deck[positionPlayerPlayingHand[i]].Image
+            opponentInterCard[i] = deck[positionOpponentPlayingHand[i]].Image   }
+        opponentCardFace = opponentCardFace.map { _ in opponentCardSuit }   }
 
-        playerFirstCardFace = deck[positionPlayerPlayingHand[0]].Image
-        playerSecondCardFace = deck[positionPlayerPlayingHand[1]].Image
-        playerThirdCardFace = deck[positionPlayerPlayingHand[2]].Image
-        playerFourthCardFace = deck[positionPlayerPlayingHand[3]].Image
-        opponentFirstCardFace = opponentCardSuit
-        opponentSecondCardFace = opponentCardSuit
-        opponentThirdCardFace = opponentCardSuit
-        opponentFourthCardFace = opponentCardSuit
-        
-        opponentFirstInterCard = deck[positionOpponentPlayingHand[0]].Image
-        opponentSecondInterCard = deck[positionOpponentPlayingHand[1]].Image
-        opponentThirdInterCard = deck[positionOpponentPlayingHand[2]].Image
-        opponentFourthInterCard = deck[positionOpponentPlayingHand[3]].Image
-        playerFirstInterCard = deck[positionPlayerPlayingHand[0]].Image
-        playerSecondInterCard = deck[positionPlayerPlayingHand[1]].Image
-        playerThirdInterCard = deck[positionPlayerPlayingHand[2]].Image
-        playerFourthInterCard = deck[positionPlayerPlayingHand[3]].Image
-    }
-    
         func initializePlayerDeckAndHand() {
             /* Creating arrays of ten deck cards and four hand cards for a player. */
             for _ in 1...10  {
@@ -730,8 +583,7 @@ struct ContentView: View {
                         playerPlayingHand.append(deck[interCard].Value)
                         positionPlayerPlayingHand.append(interCard)
                         interCard = Int.random(in: 0..<playersHand.count)
-                    }   while !playerPlayingHand.contains(playersHand[interCard]) && playerPlayingHand.capacity == 3 }
-                }
+        }   while !playerPlayingHand.contains(playersHand[interCard]) && playerPlayingHand.capacity == 3 }  }
         
         func initializeOpponentDeckAndHand() {
             for _ in 1...10 {
@@ -754,12 +606,10 @@ struct ContentView: View {
                         opponentPlayingHand.append(deck[interCard].Value)
                         positionOpponentPlayingHand.append(interCard)
                         interCard = Int.random(in: 0..<opponentsHand.count)
-                    }   while !opponentPlayingHand.contains(opponentsHand[interCard]) && opponentPlayingHand.capacity == 3  }
-                }
+        }   while !opponentPlayingHand.contains(opponentsHand[interCard]) && opponentPlayingHand.capacity == 3  }   }
         
     /* Deals a card to both players from the dealer deck. */
                 func dealerMove() {
-                    
                     for position in 0...opponentGameboard.count - 1 {
                         var randomCardNum = Int.random(in: 0..<dealerCards.count - 1)
                         if (opponentGameboard[position].Taken == false)   {
@@ -797,8 +647,7 @@ struct ContentView: View {
                                             dealerCards[randomCardNum].Taken = true
                                             self.playerScore += dealerCards[randomCardNum].Value
                                             break   }   }   }
-                    checkGameStatus()
-                }   // End of dealerMove()
+                                            checkGameStatus()   }   // End of dealerMove()
     
                 func opponentMove() {
                     let interScore = playerScore
@@ -821,17 +670,13 @@ struct ContentView: View {
                         if (playerScore == targetScore)  { print("opponent won") }
                         else if (playerScore >= targetScore) { print("opponent lost") }
                         else { nextTurn() } }
-                    checkGameStatus()
-                    }   // End of opponentMove()
+                    checkGameStatus()   }   // End of opponentMove()
     
             // Player's move.
             func playerMove()   {
                 isPlayerTurn = true
                 playerHasActed = false
-                
-                print("🧍 Player’s turn — choose Hit or Stand")
-                
-            } // End of player's move
+                print("🧍 Player’s turn — choose Hit or Stand") }
     
                 func startGame()    {
                     // Resetting game and rounds counters
@@ -839,74 +684,52 @@ struct ContentView: View {
                     turnCount = 0
                     playerScore = 0
                     opponentScore = 0
-                    
                     // Reset progress indicators for both players
                     for i in 0..<3 {
                         playerColors[i] = .gray
                         opponentColors[i] = .gray } // End of for loop
-                    
                     // Initializing board and decks
                     resetGameBoardForGameOrRound()
                     initializePlayerDeckAndHand()
                     initializeOpponentDeckAndHand()
                     setUpInitialCardStates()
-                    
                     // Start the first round
-                    nextRound()
-                    }   // End of startgame
+                    nextRound() }   // End of startgame
                     
                     func nextRound()   {
                         if roundsCount >= 3 {
                             endGame()
-                            return
-                        }
-                        
+                            return  }
                         turnCount+=1
                         turnCount = 0
                         print("🎯 Starting round \(roundsCount)")
-                        
                         // Reset or clear playboards for this round
-                  //      resetGameBoardForGameOrRound()
-                        
+                        // resetGameBoardForGameOrRound()
                         // Start the first turn of the round
-                        nextTurn()
-                    }  // End of nextRound
+                        nextTurn()  }  // End of nextRound
                 
                 func nextTurn(){
                     // Should a round continue
                     if isRoundOver() {
                         print("✅ Round \(roundsCount) finished.")
                         nextRound()
-                        return
-                    }
-                    
+                        return  }
                     print("Turn \(turnCount + 1) begins")
-                    
                     dealerMove()
                     opponentMove()
                     playerMove()
-                    
                     checkGameStatus()
                     print("End of turn \(turnCount + 1)")
-                    
-                    turnCount += 1
-                }   // End of nextTurn
+                    turnCount += 1  }   // End of nextTurn
                     
                 func isRoundOver() -> Bool {
-                    return playerScore >= targetScore || opponentScore >= targetScore
-                }
+                    return playerScore >= targetScore || opponentScore >= targetScore   }
                 
                 func endGame() {
                     print("🏁 Game Over!")
-                    
-                    if playerScore > opponentScore {
-                        print("🎉 Player wins!")
-                    } else if opponentScore > playerScore {
-                        print("🤖 Opponent wins!")
-                    } else {
-                        print("🤝 It’s a tie!")
-                    }
-                }
+                    if playerScore > opponentScore {    print("🎉 Player wins!")
+                    } else if opponentScore > playerScore { print("🤖 Opponent wins!")
+                    } else {    print("🤝 It’s a tie!") }   }
                 
                     // Skipping or Standing a move
                 func stand()    {
@@ -916,8 +739,7 @@ struct ContentView: View {
                     print("standing")
                     playerHasActed = true
                     isPlayerTurn = false
-                    nextTurn()
-                }   // End of stand()
+                    nextTurn()  }   // End of stand()
                     
                     // Opponent's move.
                     func hitOpponent()  {
@@ -933,7 +755,6 @@ struct ContentView: View {
                                     break   }   }   }   }   // End of hit()
                     
                     var body: some View {
-                        
                         ZStack  { // The Main Main Stack
                             Color.offWhite
                             LinearGradient(Color.darkStart, Color.darkEnd)
@@ -964,17 +785,13 @@ struct ContentView: View {
     HStack  {   // Player Score ( from right to left )
         Button("")   {  }.buttonStyle(RoundButtonPlayerOne(outcomeColor: playerColors[0]))
         Button("")   {  }.buttonStyle(RoundButtonPlayerTwo(outcomeColor: playerColors[1]))
-        Button("")   {  }.buttonStyle(RoundButtonPlayerThree(outcomeColor: playerColors[2]))
-                                    }   // End of Player Score
+        Button("")   {  }.buttonStyle(RoundButtonPlayerThree(outcomeColor: playerColors[2]))    }
                             Spacer()
     HStack()  {   // Opponent Score ( from right to left )
         Button("")   {  }.buttonStyle(RoundButtonOpponentThree(outcomeColor: opponentColors[2]))
         Button("")   {  }.buttonStyle(RoundButtonOpponentTwo(outcomeColor: opponentColors[1]))
-        Button("")   {  }.buttonStyle(RoundButtonOpponentOne(outcomeColor: opponentColors[0]))
-                                    }   // End of Opponent Score
-                                }   // Player and Opponent Score Area
+        Button("")   {  }.buttonStyle(RoundButtonOpponentOne(outcomeColor: opponentColors[0]))  }   }
                                 .padding(.all, 30.0)   // End of Players Scores
-                                
     HStack()    {   // Match Scores spaced out apart
                                     Button("\(playerScore)")    {   };
                                     Button("\(opponentScore)")  {   }   }
@@ -982,10 +799,10 @@ struct ContentView: View {
                                 .buttonStyle(CurrentScoreButton())
     HStack()  {   // Player Area
         VStack  {   // Player
-            Button(action: { selectPlayerFirstCard() }, label: { playerFirstCardFace} ).scaleEffect(2)
-            Button(action: { selectPlayerSecondCard() }, label: { playerSecondCardFace} ).scaleEffect(2)
-            Button(action: { selectPlayerThirdCard() }, label: { playerThirdCardFace} ).scaleEffect(2)
-            Button(action: { selectPlayerFourthCard() }, label: { playerFourthCardFace} ).scaleEffect(2) }
+            Button(action: { selectPlayerFirstCard() }, label: { playerCardFace[0] } ).scaleEffect(2)
+            Button(action: { selectPlayerSecondCard() }, label: { playerCardFace[1] } ).scaleEffect(2)
+            Button(action: { selectPlayerThirdCard() }, label: { playerCardFace[2] } ).scaleEffect(2)
+            Button(action: { selectPlayerFourthCard() }, label: { playerCardFace[3] } ).scaleEffect(2) }
                                     .padding(.leading)   // End of Player Area
                                     .buttonStyle(PlayerHandButton())
         VStack()    {
@@ -995,42 +812,36 @@ struct ContentView: View {
         VStack  {   // Player Table
             Button(action: { /*playCard()*/ }, label: { /*p1*/playerGameboard[0].Image } )
             Button(action: { /*playCard()*/ }, label: { /*p4*/playerGameboard[3].Image } )
-            Button(action: { /*playCard()*/ }, label: { /*p7*/playerGameboard[6].Image } )
-                                            }   // End of Player Table
+            Button(action: { /*playCard()*/ }, label: { /*p7*/playerGameboard[6].Image } )  }
         VStack  {   // Player Table
             Button(action: { /*playCard()*/ }, label: { /*p2*/playerGameboard[1].Image } )
             Button(action: { /*playCard()*/ }, label: { /*p5*/playerGameboard[4].Image } )
-            Button(action: { /*playCard()*/ }, label: { /*p8*/playerGameboard[7].Image } )
-                                            }   // End of Player Table
+            Button(action: { /*playCard()*/ }, label: { /*p8*/playerGameboard[7].Image } )  }
         VStack  {   // Player Table
             Button(action: { /*playCard()*/ }, label: { /*p3*/playerGameboard[2].Image } )
             Button(action: { /*playCard()*/ }, label: { /*p6*/playerGameboard[5].Image } )
-            Button(action: { /*playCard()*/ }, label: { /*p9*/playerGameboard[8].Image } )
-                                            }   // End of Player Table
+            Button(action: { /*playCard()*/ }, label: { /*p9*/playerGameboard[8].Image } )  }
                         Spacer()
         VStack  {   // Opponent Table
             Button(action: { /*playCard()*/ }, label: { /*o3*/opponentGameboard[2].Image } )
             Button(action: { /*playCard()*/ }, label: { /*o6*/opponentGameboard[5].Image } )
-            Button(action: { /*playCard()*/ }, label: { /*o9*/opponentGameboard[8].Image } )
-                                            }   // End of Player Table
+            Button(action: { /*playCard()*/ }, label: { /*o9*/opponentGameboard[8].Image } )    }
         VStack  {   // Player Table
             Button(action: { /*playCard()*/ }, label: { /*o2*/opponentGameboard[1].Image } )
             Button(action: { /*playCard()*/ }, label: { /*o5*/opponentGameboard[4].Image } )
-            Button(action: { /*playCard()*/ }, label: { /*o8*/opponentGameboard[7].Image } )
-                                            }   // End of Player Table
+            Button(action: { /*playCard()*/ }, label: { /*o8*/opponentGameboard[7].Image } )    }
         VStack  {   // Player Table
             Button(action: { /*playCard()*/ }, label: { /*o1*/opponentGameboard[0].Image } )
             Button(action: { /*playCard()*/ }, label: { /*o4*/opponentGameboard[3].Image } )
-            Button(action: { /*playCard()*/ }, label: { /*o7*/opponentGameboard[6].Image } )
-                                            }   // End of Player and Opponent Table
+            Button(action: { /*playCard()*/ }, label: { /*o7*/opponentGameboard[6].Image } )    }
                         Spacer()    }   // End of HStack
                                         .buttonStyle(GameboardButton())
                         Spacer()    }   // End of VStack
         VStack  {   // Opponent
-            Button(action: { selectOpponentFirstCard() }, label: { opponentFirstCardFace } ).scaleEffect(2)
-            Button(action: { selectOpponentSecondCard() }, label: { opponentSecondCardFace } ).scaleEffect(2)
-            Button(action: { selectOpponentThirdCard() }, label: { opponentThirdCardFace } ).scaleEffect(2)
-            Button(action: { selectOpponentFourthCard() }, label: { opponentFourthCardFace} ).scaleEffect(2) }
+            Button(action: { selectOpponentFirstCard() }, label: { opponentCardFace[0] } ).scaleEffect(2)
+            Button(action: { selectOpponentSecondCard() }, label: { opponentCardFace[1] } ).scaleEffect(2)
+            Button(action: { selectOpponentThirdCard() }, label: { opponentCardFace[2] } ).scaleEffect(2)
+            Button(action: { selectOpponentFourthCard() }, label: { opponentCardFace[3] } ).scaleEffect(2) }
                                     .padding(.trailing)
                                     .buttonStyle(OpponentHandButton())  }   // End of Player Area
                         Spacer()
