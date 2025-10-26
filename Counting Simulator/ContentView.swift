@@ -186,26 +186,19 @@ struct ContentView: View {
                 .foregroundColor(/*@START_MENU_TOKEN@*/.pink/*@END_MENU_TOKEN@*/)}   }   // End of CurrentScoreButton
 
     // Card's style
-    struct PlayerHandButton: ButtonStyle  {
+    struct HandButtonStyle: ButtonStyle  {
+        var horizontalPadding: CGFloat = 30
+        var verticalPadding: CGFloat = 35
+        var radius: CGFloat = 3
+        var color: Color = .white
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .scaleEffect(configuration.isPressed ? 1 : 0.95)
                 .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
-                .foregroundColor(.white)
-                .cornerRadius(3)
-                .padding(.horizontal, 30)    // Padding on right and left.
-                .padding(.vertical,35)}   }  // End of struct GameboardButton.
-
-    /* Stylizing for an opponenets's card. */
-    struct OpponentHandButton: ButtonStyle  {
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .scaleEffect(configuration.isPressed ? 1 : 0.95)
-                .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
-                .foregroundColor(.white)
-                .cornerRadius(3)
-                .padding(.horizontal, 30)       // Padding on right and left.
-                .padding(.vertical,35)  }   }   // End of struct GameboardButton.
+                .foregroundColor(color)
+                .cornerRadius(radius)
+                .padding(.horizontal, horizontalPadding)    // Padding on right and left.
+                .padding(.vertical,verticalPadding)}   }  // End of struct GameboardButton.
 
     struct DarkBackground<S: Shape>: View   {
         var isHighlighted: Bool
@@ -647,7 +640,7 @@ struct ContentView: View {
                 index in Button(action: { selectPlayerCard(at: index) }) {  playerCardFace[index]   }
                 .scaleEffect(2) } }
                                     .padding(.leading)   // End of Player Area
-                                    .buttonStyle(PlayerHandButton())
+                                    .buttonStyle(HandButtonStyle())
         VStack()    {
                         Spacer()
     HStack()    {   // Player and Opponent Table
@@ -685,7 +678,7 @@ struct ContentView: View {
                 index in Button(action: { selectOpponentCard(at: index) }) {    opponentCardFace[index] }
                 .scaleEffect(2) }   }
                                     .padding(.trailing)
-                                    .buttonStyle(OpponentHandButton())  }   // End of Player Area
+                                    .buttonStyle(HandButtonStyle())  }   // End of Player Area
                         Spacer()
     HStack() {          Spacer()
                                     // Hit Button
