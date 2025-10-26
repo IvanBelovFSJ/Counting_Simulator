@@ -66,8 +66,8 @@ struct ContentView: View {
     if let img = card["P\(i)"] { tupleCard["P\(i)"] = (Value: i, Image: img, Path:"Card_Plus_\(i)")  }
     if let img = card["M\(i)"] { tupleCard["M\(i)"] = (Value: -i, Image: img, Path:"Card_Minus_\(i)")    }   }
         
-        dealerCardP = Array(repeating: (Taken: false, Image: Image("placeholder"), Value: 0), count: 9)
-        dealerCardM = Array(repeating: (Taken: false, Image: Image("placeholder"), Value: 0), count: 9)
+    dealerCardP = Array(repeating: (Taken: false, Image: Image("placeholder"), Value: 0), count: 9)
+    dealerCardM = Array(repeating: (Taken: false, Image: Image("placeholder"), Value: 0), count: 9)
         
         for i in 0...8 {
     if let img = card["P\(i)"] {
@@ -81,10 +81,10 @@ struct ContentView: View {
     if let img = card["P\(i+1)"] {  tupleP.append((Taken: false, Image: img))   }
     if let img = card["M\(i+1)"] {  tupleO.append((Taken: false, Image: img))   }   }
         
-            tuplePlayerHand = Array(repeating: (Taken: false, Image: interImage, Value: 0, Path: ""), count: 4)
-            tupleOpponentHand = Array(repeating: (Taken: false, Image: interImage, Value: 0, Path: ""), count: 4)
-            playerGameboard = Array(repeating: (Taken: false, Image: cardSpot), count: 9)
-            opponentGameboard = Array(repeating: (Taken: false, Image: cardSpot), count: 9)
+    tuplePlayerHand = Array(repeating: (Taken: false, Image: interImage, Value: 0, Path: ""), count: 4)
+    tupleOpponentHand = Array(repeating: (Taken: false, Image: interImage, Value: 0, Path: ""), count: 4)
+    playerGameboard = Array(repeating: (Taken: false, Image: cardSpot), count: 9)
+    opponentGameboard = Array(repeating: (Taken: false, Image: cardSpot), count: 9)
             
     for i in 0..<4 {
                 tuplePlayerHand[i] = (Taken: false, Image: interImage, Value: 0, Path: "")
@@ -104,7 +104,7 @@ struct ContentView: View {
                 .padding(50)
                 .contentShape(Capsule())
                 .background(    Group   {
-                    if configuration.isPressed  {   Capsule()
+            if configuration.isPressed  {   Capsule()
                         .fill(Color.offWhite)
                         .overlay(   Capsule()
                         .stroke(Color.gray, lineWidth: 4)
@@ -133,71 +133,22 @@ struct ContentView: View {
                 .scaleEffect(configuration.isPressed ? 1.2 : 1) // first step in press action
                 .animation(.easeOut(duration: 0.2), value: configuration.isPressed) }   }
 
-    /* Stylizing a first round's progress button. */
-    struct RoundButtonPlayerOne: ButtonStyle  {
-        var outcomeColor = Color.gray
+    /* Stylizing rounds' progress buttons for player and opponent. */
+    struct RoundButtonStyle: ButtonStyle  {
+        var outcomeColor: Color = Color.gray
+        var scale: CGFloat = 1.7
+        var padding: CGFloat = 10
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .padding()
-                .background(LinearGradient(gradient: Gradient(colors: [outcomeColor , Color.black]), startPoint: .leading, endPoint: .trailing)  )
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [outcomeColor , Color.black]),
+                        startPoint: .leading,
+                        endPoint: .trailing )   )
                 .clipShape(Circle())       // the shape of a button
-                .scaleEffect(2)             // magnification of the button
-                .padding(.horizontal, 15)   }   }
-
-    /* The middle light indicating the player's progress. */
-    struct RoundButtonPlayerTwo: ButtonStyle  {
-        var outcomeColor = Color.gray
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .padding()
-                .background(LinearGradient(gradient: Gradient(colors: [outcomeColor , Color.black]), startPoint: .leading, endPoint: .trailing))
-                .clipShape(Circle())                // The shape of a button.
-                .scaleEffect(2)                     // Magnification of the button.
-                .padding(.horizontal, 15)   }   }   // End of struct BlueButton.
-
-    /* The last light indicating player's progress. */
-    struct RoundButtonPlayerThree: ButtonStyle  {
-        var outcomeColor = Color.gray
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .padding()
-                .background(LinearGradient(gradient: Gradient(colors: [outcomeColor , Color.black]), startPoint: .leading, endPoint: .trailing))
-                .clipShape(Circle())                // The shape of a button.
-                .scaleEffect(2)                     // Magnification of the button
-                .padding(.horizontal, 15)   }   }   // End of struct BlueButton.
-
-    /* Stylizing a first round's progress button for opponent. */
-    struct RoundButtonOpponentOne: ButtonStyle  {
-        var outcomeColor = Color.gray
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .padding()
-                .background(LinearGradient(gradient: Gradient(colors: [outcomeColor , Color.black]), startPoint: .leading, endPoint: .trailing)  )
-                .clipShape(Circle())       // the shape of a button
-                .scaleEffect(2)             // magnification of the button
-                .padding(.horizontal, 15)   }   }
-    
-    /* Stylizing a second round's progress button for opponent. */
-    struct RoundButtonOpponentTwo: ButtonStyle  {
-        var outcomeColor = Color.gray
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .padding()
-                .background(LinearGradient(gradient: Gradient(colors: [outcomeColor , Color.black]), startPoint: .leading, endPoint: .trailing)  )
-                .clipShape(Circle())       // the shape of a button
-                .scaleEffect(2)             // magnification of the button
-                .padding(.horizontal, 15)   }   }
-    
-    /* Stylizing a third round's progress button for opponent. */
-    struct RoundButtonOpponentThree: ButtonStyle  {
-        var outcomeColor = Color.gray
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .padding()
-                .background(LinearGradient(gradient: Gradient(colors: [outcomeColor , Color.black]), startPoint: .leading, endPoint: .trailing)  )
-                .clipShape(Circle())       // the shape of a button
-                .scaleEffect(2)             // magnification of the button
-                .padding(.horizontal, 15)   }   }
+                .scaleEffect(scale)             // magnification of the button
+                .padding(.horizontal, padding)  }   }
     
     /* Stylizing for a gameboard spot. */
     struct GameboardButton: ButtonStyle  {
@@ -676,14 +627,14 @@ struct ContentView: View {
                             Spacer()
     HStack()  {   //  Players Scores Area
     HStack  {   // Player Score ( from right to left )
-        Button("")   {  }.buttonStyle(RoundButtonPlayerOne(outcomeColor: playerColors[0]))
-        Button("")   {  }.buttonStyle(RoundButtonPlayerTwo(outcomeColor: playerColors[1]))
-        Button("")   {  }.buttonStyle(RoundButtonPlayerThree(outcomeColor: playerColors[2]))    }
+        Button("")   {  }.buttonStyle(RoundButtonStyle(outcomeColor: playerColors[0]))
+        Button("")   {  }.buttonStyle(RoundButtonStyle(outcomeColor: playerColors[1]))
+        Button("")   {  }.buttonStyle(RoundButtonStyle(outcomeColor: playerColors[2]))    }
                             Spacer()
     HStack()  {   // Opponent Score ( from right to left )
-        Button("")   {  }.buttonStyle(RoundButtonOpponentThree(outcomeColor: opponentColors[2]))
-        Button("")   {  }.buttonStyle(RoundButtonOpponentTwo(outcomeColor: opponentColors[1]))
-        Button("")   {  }.buttonStyle(RoundButtonOpponentOne(outcomeColor: opponentColors[0]))  }   }
+        Button("")   {  }.buttonStyle(RoundButtonStyle(outcomeColor: opponentColors[2]))
+        Button("")   {  }.buttonStyle(RoundButtonStyle(outcomeColor: opponentColors[1]))
+        Button("")   {  }.buttonStyle(RoundButtonStyle(outcomeColor: opponentColors[0]))  }   }
                                 .padding(.all, 30.0)   // End of Players Scores
     HStack()    {   // Match Scores spaced out apart
                                     Button("\(playerScore)")    {   };
